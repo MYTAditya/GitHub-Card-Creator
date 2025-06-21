@@ -347,10 +347,11 @@ function App() {
 
         {/* Footer */}
         <footer className="text-center mt-16 text-gray-500">
-          <p>By 
+          <p>By &nbsp;
             <a href="https://github.com/MYTAditya" target="dev">
               Mastered YT Aditya
             </a>
+            .
           </p>
           <div align='center'>
             <a href="https://github.com/MYTAditya/GitHub-Card-Creator" target="source">
