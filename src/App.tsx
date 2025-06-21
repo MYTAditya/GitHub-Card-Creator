@@ -139,7 +139,7 @@ function App() {
         <header className="text-center mb-12">
           <div className="flex items-center justify-center gap-3 mb-4">
             <Github className="w-8 h-8 text-lime-400" />
-            <h1 className="text-4xl font-bold text-lime-400 bg-clip-text text-transparent">
+            <h1 className="text-4xl font-bold text-lime-400 bg-clip-text">
               GitHub Card Creator
             </h1>
           </div>
