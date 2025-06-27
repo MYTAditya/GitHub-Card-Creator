@@ -7,8 +7,8 @@ interface FormData {
   type: CardType;
   user: string;
   repo: string;
-  num?: string;
-  ver?: string;
+  num?: number;
+  tag?: string;
 }
 
 interface CodeData {
@@ -23,7 +23,7 @@ function App() {
     user: '',
     repo: '',
     num: '',
-    ver: ''
+    tag: ''
   });
   
   const [previewUrl, setPreviewUrl] = useState<string>('');
@@ -42,7 +42,7 @@ function App() {
   ];
 
   const generateUrls = () => {
-    const { type, user, repo, num, ver } = formData;
+    const { type, user, repo, num, tag } = formData;
     
     if (!user || !repo) {
       setError('User and repository are required');
@@ -54,8 +54,8 @@ function App() {
       return;
     }
 
-    if (type === 'release' && !ver) {
-      setError('Version is required for releases');
+    if (type === 'release' && !tag) {
+      setError('Tag is required for releases');
       return;
     }
 
@@ -82,8 +82,8 @@ function App() {
         githubUrl = `https://github.com/${user}/${repo}/discussions/${num}`;
         break;
       case 'release':
-        imageUrl = `https://opengraph.githubassets.com/b615556068ae0a4eac8cdf43913fe90633b0ffb071313f8cbfb13265f1e9e52c/${user}/${repo}/releases/tag/${ver}`;
-        githubUrl = `https://github.com/${user}/${repo}/releases/tag/${ver}`;
+        imageUrl = `https://opengraph.githubassets.com/b615556068ae0a4eac8cdf43913fe90633b0ffb071313f8cbfb13265f1e9e52c/${user}/${repo}/releases/tag/${tag}`;
+        githubUrl = `https://github.com/${user}/${repo}/releases/tag/${tag}`;
         break;
     }
 
@@ -221,13 +221,13 @@ function App() {
               {formData.type === 'release' && (
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-2">
-                    Release Version
+                    Release Tag
                   </label>
                   <input
                     type="text"
-                    value={formData.ver}
+                    value={formData.tag}
                     onChange={(e) => handleInputChange('ver', e.target.value)}
-                    placeholder="e.g., v1.0.0"
+                    placeholder="e.g., 1.0.0"
                     className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 transition-all duration-200"
                   />
                 </div>
