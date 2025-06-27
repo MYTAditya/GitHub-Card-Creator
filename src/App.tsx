@@ -226,7 +226,7 @@ function App() {
                   <input
                     type="text"
                     value={formData.tag}
-                    onChange={(e) => handleInputChange('ver', e.target.value)}
+                    onChange={(e) => handleInputChange('tag', e.target.value)}
                     placeholder="e.g., 1.0.0"
                     className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 transition-all duration-200"
                   />
@@ -255,18 +255,10 @@ function App() {
                   <img
                     src={previewUrl}
                     alt="GitHub Card Preview"
-                    onClick={() => window.open(redirectUrl, '_blank')}
                     onLoad={handleImageLoad}
                     onError={handleImageError}
                     className="rounded-xl shadow-lg cursor-pointer hover:shadow-2xl transition-all duration-300 hover:scale-105 max-w-full h-auto"
                   />
-                  {imageLoaded && (
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-200 bg-black/50 rounded-xl">
-                      <span className="text-white text-sm font-medium px-4 py-2 bg-black/70 rounded-lg">
-                        Click to open on GitHub
-                      </span>
-                    </div>
-                  )}
                 </div>
               </div>
             </div>
