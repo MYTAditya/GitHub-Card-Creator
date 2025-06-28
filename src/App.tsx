@@ -209,7 +209,7 @@ function App() {
                      formData.type === 'pull-request' ? 'Pull Request Number' : 'Discussion Number'}
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     value={formData.num}
                     onChange={(e) => handleInputChange('num', e.target.value)}
                     placeholder="e.g., 1"
