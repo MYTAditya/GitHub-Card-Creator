@@ -14,6 +14,8 @@ interface FormData {
 interface CodeData {
   url: string;
   markdown: string;
+  rst: string;
+  asciidoc: string;
   html: string;
 }
 
@@ -93,11 +95,17 @@ function App() {
 
     // Generate code data
     const markdown = `[![GitHub Card](${imageUrl})](${githubUrl})`;
+    const rst = `.. image:: ${imageUrl}
+   :alt: GitHub Card
+   :target: ${githubUrl}`;
+    const asciidoc = `image:${imageUrl}[GitHub Card,link="${githubUrl}"]`;
     const html = `<a href="${githubUrl}" target="_blank"><img src="${imageUrl}" alt="GitHub Card" /></a>`;
     
     setCodeData({
       url: imageUrl,
       markdown,
+      rst,
+      asciidoc,
       html
     });
   };
@@ -309,6 +317,48 @@ function App() {
                   </div>
                   <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
                     <code className="text-sm text-gray-300 break-all">{codeData.markdown}</code>
+                  </div>
+                </div>
+
+                {/* rSt */}
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <label className="text-sm font-medium text-gray-300">rSt</label>
+                    <button
+                      onClick={() => copyToClipboard(codeData.rst, 'rst')}
+                      className="flex items-center gap-2 px-3 py-1 bg-lime-400/10 hover:bg-lime-400/20 text-lime-400 rounded-lg transition-colors duration-200"
+                    >
+                      {copiedType === 'rst' ? (
+                        <CheckCircle className="w-4 h-4" />
+                      ) : (
+                        <Copy className="w-4 h-4" />
+                      )}
+                      <span className="text-sm">{copiedType === 'rst' ? 'Copied!' : 'Copy'}</span>
+                    </button>
+                  </div>
+                  <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
+                    <code className="text-sm text-gray-300 break-all">{codeData.rst}</code>
+                  </div>
+                </div>
+
+                {/* AsciiDoc */}
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <label className="text-sm font-medium text-gray-300">AsciiDoc</label>
+                    <button
+                      onClick={() => copyToClipboard(codeData.asciidoc, 'asciidoc')}
+                      className="flex items-center gap-2 px-3 py-1 bg-lime-400/10 hover:bg-lime-400/20 text-lime-400 rounded-lg transition-colors duration-200"
+                    >
+                      {copiedType === 'asciidoc' ? (
+                        <CheckCircle className="w-4 h-4" />
+                      ) : (
+                        <Copy className="w-4 h-4" />
+                      )}
+                      <span className="text-sm">{copiedType === 'asciidoc' ? 'Copied!' : 'Copy'}</span>
+                    </button>
+                  </div>
+                  <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
+                    <code className="text-sm text-gray-300 break-all">{codeData.asciidoc}</code>
                   </div>
                 </div>
 
