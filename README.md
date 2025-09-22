@@ -1,6 +1,6 @@
 # GitHub Card Creator
 
-<img alt="GitHub Created At" src="https://img.shields.io/github/created-at/MYTAditya/GitHub-Card-Creator?color=%238a2be2"> <img alt="GitHub Release" src="https://img.shields.io/github/v/release/MYTAditya/GitHub-Card-Creator?color=%23a9e43a"> <img alt="GitHub License" src="https://img.shields.io/github/license/MYTAditya/GitHub-Card-Creator?color=orange"> <img alt="GitHub top language" src="https://img.shields.io/badge/language-Typescript-blue">
+<img alt="GitHub Created At" src="https://img.shields.io/github/created-at/MYTAditya/GitHub-Card-Creator?color=%238a2be2&style=for-the-badge"> <img alt="GitHub Release" src="https://img.shields.io/github/v/release/MYTAditya/GitHub-Card-Creator?color=%23a9e43a&style=for-the-badge"> <img alt="GitHub License" src="https://img.shields.io/github/license/MYTAditya/GitHub-Card-Creator?color=orange&style=for-the-badge"> <img alt="GitHub top language" src="https://img.shields.io/badge/language-Typescript-blue?style=for-the-badge">
 
 [![](https://img.youtube.com/vi/ijl8E_pBKW8/0.jpg)](https://youtu.be/ijl8E_pBKW8?si=_sBSM6O6qSzH4sMc)
 
