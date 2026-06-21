@@ -65,6 +65,7 @@ function App() {
     
     let imageUrl = '';
     let githubUrl = '';
+    // These are the constant URLs.
     let imageUrlConst = 'https://opengraph.githubassets.com/54c6dafcd9f93d895328fdc57409345555ea517c7c4d4ad9b75d0a4208404735';
     let githubUrlConst = 'https://github.com';
 
@@ -338,7 +339,7 @@ function App() {
                       <span className="text-sm">{copiedType === 'rst' ? 'Copied!' : 'Copy'}</span>
                     </button>
                   </div>
-                  <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
+                  <div className="bg-gray-900 rounded-lg p-4 border border-gray-700" style={{ whiteSpace: 'pre-wrap'}}>
                     <code className="text-sm text-gray-300 break-all">{codeData.rst}</code>
                   </div>
                 </div>
