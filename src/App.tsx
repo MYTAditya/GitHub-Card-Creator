@@ -65,27 +65,29 @@ function App() {
     
     let imageUrl = '';
     let githubUrl = '';
+    let imageUrlConst = 'https://opengraph.githubassets.com/54c6dafcd9f93d895328fdc57409345555ea517c7c4d4ad9b75d0a4208404735';
+    let githubUrlConst = 'https://github.com';
 
     switch (type) {
       case 'repository':
-        imageUrl = `https://opengraph.githubassets.com/54c6dafcd9f93d895328fdc57409345555ea517c7c4d4ad9b75d0a4208404735/${user}/${repo}`;
-        githubUrl = `https://github.com/${user}/${repo}`;
+        imageUrl = `${imageUrlConst}/${user}/${repo}`;
+        githubUrl = `${githubUrlConst}/${user}/${repo}`;
         break;
       case 'issue':
-        imageUrl = `https://opengraph.githubassets.com/b6a06c2c07355775735f11a24ef1d78d281fed7ede1bb44404de8b132b2ef3a2/${user}/${repo}/issues/${num}`;
-        githubUrl = `https://github.com/${user}/${repo}/issues/${num}`;
+        imageUrl = `${imageUrlConst}/${user}/${repo}/issues/${num}`;
+        githubUrl = `${githubUrlConst}/${user}/${repo}/issues/${num}`;
         break;
       case 'pull-request':
-        imageUrl = `https://opengraph.githubassets.com/b6a06c2c07355775735f11a24ef1d78d281fed7ede1bb44404de8b132b2ef3a2/${user}/${repo}/pull/${num}`;
-        githubUrl = `https://github.com/${user}/${repo}/pull/${num}`;
+        imageUrl = `${imageUrlConst}/${user}/${repo}/pull/${num}`;
+        githubUrl = `${githubUrlConst}/${user}/${repo}/pull/${num}`;
         break;
       case 'discussion':
-        imageUrl = `https://opengraph.githubassets.com/b615556068ae0a4eac8cdf43913fe90633b0ffb071313f8cbfb13265f1e9e52c/${user}/${repo}/discussions/${num}`;
-        githubUrl = `https://github.com/${user}/${repo}/discussions/${num}`;
+        imageUrl = `${imageUrlConst}/${user}/${repo}/discussions/${num}`;
+        githubUrl = `${githubUrlConst}/${user}/${repo}/discussions/${num}`;
         break;
       case 'release':
-        imageUrl = `https://opengraph.githubassets.com/b615556068ae0a4eac8cdf43913fe90633b0ffb071313f8cbfb13265f1e9e52c/${user}/${repo}/releases/tag/${tag}`;
-        githubUrl = `https://github.com/${user}/${repo}/releases/tag/${tag}`;
+        imageUrl = `${imageUrlConst}/${user}/${repo}/releases/tag/${tag}`;
+        githubUrl = `${githubUrlConst}/${user}/${repo}/releases/tag/${tag}`;
         break;
     }
 
