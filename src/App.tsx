@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Github, Copy, CheckCircle, AlertCircle } from 'lucide-react';
 
-type CardType = 'repository' | 'issue' | 'pull-request' | 'discussion' | 'release';
+type CardType = 'repository' | 'issue' | 'pull-request' | 'discussion' | 'release' | 'app';
 
 interface FormData {
   type: CardType;
@@ -9,6 +9,7 @@ interface FormData {
   repo: string;
   num?: number;
   tag?: string;
+  appname?: string;
 }
 
 interface CodeData {
@@ -25,7 +26,8 @@ function App() {
     user: '',
     repo: '',
     num: '',
-    tag: ''
+    tag: '',
+    appname: ''
   });
   
   const [previewUrl, setPreviewUrl] = useState<string>('');
@@ -41,10 +43,11 @@ function App() {
     { id: 'pull-request', label: 'Pull Request', icon: '🔄' },
     { id: 'discussion', label: 'Discussion', icon: '💬' },
     { id: 'release', label: 'Release', icon: '🚀' }
+    { id: 'app', label: 'Marketplace App', icon: '⚙️' }
   ];
 
   const generateUrls = () => {
-    const { type, user, repo, num, tag } = formData;
+    const { type, user, repo, num, tag, appname } = formData;
     
     if (!user || !repo) {
       setError('User and repository are required');
@@ -57,10 +60,15 @@ function App() {
     }
 
     if (type === 'release' && !tag) {
-      setError('Tag is required for releases');
+      setError('Tag is required for Releases');
       return;
     }
 
+    if (type === 'app' && !appname) {
+      setError('App name is required for Marketplace Apps');
+      return;
+    }
+    
     setError('');
     
     let imageUrl = '';
