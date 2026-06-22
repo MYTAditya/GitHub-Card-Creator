@@ -30,7 +30,7 @@ function App() {
   
   const [previewUrl, setPreviewUrl] = useState<string>('');
   const [redirectUrl, setRedirectUrl] = useState<string>('');
-  const [codeData, setCodeData] = useState<CodeData>({ url: '', markdown: '', html: '' });
+  const [codeData, setCodeData] = useState<CodeData>({ url: '', markdown: '', rst: '', asciidoc: '', html: '' });
   const [error, setError] = useState<string>('');
   const [imageLoaded, setImageLoaded] = useState<boolean>(false);
   const [copiedType, setCopiedType] = useState<string>('');
@@ -134,7 +134,7 @@ function App() {
   };
 
   const handleImageError = () => {
-    setError('Failed to load image. Please check if the repository/issue/PR exists.');
+    setError(`Failed to load image. Please check if the ${type} exists.`);
     setImageLoaded(false);
   };
 
