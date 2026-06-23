@@ -212,7 +212,7 @@ function App() {
                     className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 transition-all duration-200"
                   />
                 </div>
-      
+                <!-- Line Break -->
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-2">
                     Repository Name
@@ -267,7 +267,7 @@ function App() {
                     type="text"
                     value={formData.appname}
                     onChange={(e) => handleInputChange('appname', e.target.value)}
-                    placeholder="e.g., octocat"
+                    placeholder="e.g., github-copilot"
                     className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 transition-all duration-200"
                   />
                 </div>
