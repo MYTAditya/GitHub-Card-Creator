@@ -5,8 +5,8 @@ type CardType = 'repository' | 'issue' | 'pull-request' | 'discussion' | 'releas
 
 interface FormData {
   type: CardType;
-  user: string;
-  repo: string;
+  user?: string;
+  repo?: string;
   num?: number;
   tag?: string;
   appname?: string;
@@ -42,14 +42,14 @@ function App() {
     { id: 'issue', label: 'Issue', icon: '🐛' },
     { id: 'pull-request', label: 'Pull Request', icon: '🔄' },
     { id: 'discussion', label: 'Discussion', icon: '💬' },
-    { id: 'release', label: 'Release', icon: '🚀' }
+    { id: 'release', label: 'Release', icon: '🚀' },
     { id: 'app', label: 'Marketplace App', icon: '⚙️' }
   ];
 
   const generateUrls = () => {
     const { type, user, repo, num, tag, appname } = formData;
     
-    if (!user || !repo) {
+    if ((type !== 'app') && !user || !repo) {
       setError('User and repository are required');
       return;
     }
@@ -97,6 +97,10 @@ function App() {
       case 'release':
         imageUrl = `${imageUrlConst}/${user}/${repo}/releases/tag/${tag}`;
         githubUrl = `${githubUrlConst}/${user}/${repo}/releases/tag/${tag}`;
+        break;
+      case 'app':
+        imageUrl = `${imageUrlConst}/marketplace/${appname}`;
+        githubUrl = `${githubUrlConst}/marketplace/${appname}`;
         break;
     }
 
