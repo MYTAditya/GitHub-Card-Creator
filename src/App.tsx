@@ -199,31 +199,33 @@ function App() {
 
             {/* Input Fields */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  GitHub Username
-                </label>
-                <input
-                  type="text"
-                  value={formData.user}
-                  onChange={(e) => handleInputChange('user', e.target.value)}
-                  placeholder="e.g., octocat"
-                  className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 transition-all duration-200"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Repository Name
-                </label>
-                <input
-                  type="text"
-                  value={formData.repo}
-                  onChange={(e) => handleInputChange('repo', e.target.value)}
-                  placeholder="e.g., Hello-World"
-                  className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 transition-all duration-200"
-                />
-              </div>
+              {formData.type !== 'app' && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    GitHub Username
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.user}
+                    onChange={(e) => handleInputChange('user', e.target.value)}
+                    placeholder="e.g., octocat"
+                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 transition-all duration-200"
+                  />
+                </div>
+      
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Repository Name
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.repo}
+                    onChange={(e) => handleInputChange('repo', e.target.value)}
+                    placeholder="e.g., Hello-World"
+                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 transition-all duration-200"
+                  />
+                </div>
+              )}
 
               {(formData.type === 'issue' || formData.type === 'pull-request' || formData.type === 'discussion') && (
                 <div>
@@ -255,6 +257,21 @@ function App() {
                   />
                 </div>
               )}
+
+              {formData.type === 'app' && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    GitHub Marketplace App Name
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.appname}
+                    onChange={(e) => handleInputChange('appname', e.target.value)}
+                    placeholder="e.g., octocat"
+                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 transition-all duration-200"
+                  />
+                </div>
+               )}
             </div>
 
             {/* Error Message */}
