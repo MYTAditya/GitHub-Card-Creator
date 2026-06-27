@@ -31,7 +31,6 @@ function App() {
   });
   
   const [previewUrl, setPreviewUrl] = useState<string>('');
-  const [redirectUrl, setRedirectUrl] = useState<string>('');
   const [codeData, setCodeData] = useState<CodeData>({ url: '', markdown: '', rst: '', asciidoc: '', html: '' });
   const [error, setError] = useState<string>('');
   const [imageLoaded, setImageLoaded] = useState<boolean>(false);
@@ -74,8 +73,8 @@ function App() {
     let imageUrl = '';
     let githubUrl = '';
     // These are the constant URLs.
-    let imageUrlConst = 'https://opengraph.githubassets.com/54c6dafcd9f93d895328fdc57409345555ea517c7c4d4ad9b75d0a4208404735';
-    let githubUrlConst = 'https://github.com';
+    const imageUrlConst = 'https://opengraph.githubassets.com/54c6dafcd9f93d895328fdc57409345555ea517c7c4d4ad9b75d0a4208404735';
+    const githubUrlConst = 'https://github.com';
 
     switch (type) {
       case 'repository':
@@ -105,7 +104,6 @@ function App() {
     }
 
     setPreviewUrl(imageUrl);
-    setRedirectUrl(githubUrl);
     setImageLoaded(false);
 
     // Generate code data
