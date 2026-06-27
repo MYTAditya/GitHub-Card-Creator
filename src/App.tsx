@@ -45,7 +45,7 @@ function App() {
     { id: 'app', label: 'Marketplace App', icon: '🔌' }
   ];
 
-  const generateUrls = useCallback(() => {
+  const generateUrls = () => {
     const { type, user, repo, num, tag, appname } = formData;
     
     if ((type !== 'app') && (!user || !repo)) {
@@ -121,7 +121,7 @@ function App() {
       asciidoc,
       html
     });
-  }, [formData]);
+  },
 
   useEffect(() => {
   if (formData.type === 'app') {
@@ -141,7 +141,7 @@ function App() {
       generateUrls();
     }
   }
-}, [generateUrls]);
+}, [formData, generateUrls]);
 
   const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
