@@ -121,7 +121,7 @@ function App() {
       asciidoc,
       html
     });
-  },
+  };
 
   useEffect(() => {
   if (formData.type === 'app') {
