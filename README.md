@@ -1,11 +1,10 @@
 # GitHub Card Creator
 
-![](https://img.shields.io/github/created-at/MYTAditya/GitHub-Card-Creator?color=%23561BC5&style=for-the-badge&logo=GitHub)
-![](https://img.shields.io/github/v/release/MYTAditya/GitHub-Card-Creator?color=%23a9e43a&style=for-the-badge&logo=GitHub)
-![](https://img.shields.io/github/license/MYTAditya/GitHub-Card-Creator?color=AB2B28&style=for-the-badge&logo=bsd)
+![](https://img.shields.io/github/created-at/MYTAditya/GitHub-Card-Creator?color=561BC5&style=for-the-badge&logo=GitHub)
+![](https://img.shields.io/github/v/release/MYTAditya/GitHub-Card-Creator?color=a9e43a&style=for-the-badge&logo=GitHub)
+![](https://img.shields.io/github/license/MYTAditya/GitHub-Card-Creator?style=for-the-badge&logo=BSD&color=AB2B28)
 ![](https://img.shields.io/github/languages/top/MYTAditya/GitHub-Card-Creator?style=for-the-badge&logo=Typescript&logoColor=white&color=3178C6)
-![](https://img.shields.io/github/downloads/MYTAditya/GitHub-Card-Creator/total?style=for-the-badge&color=01c45b&logo=GitHub)
-![](https://img.shields.io/github/stars/MYTAditya/GitHub-Card-Creator?style=for-the-badge&logo=GitHub&color=31F6E1)
+![](https://img.shields.io/github/stars/MYTAditya/GitHub-Card-Creator?style=for-the-badge&logo=GitHub&color=01c45b)
 ![](https://visitor-badge.laobi.icu/badge?page_id=MYTAditya.GitHub-Card-Creator&left_text=VISITORS&logo=github&radius=0)
 
 [![](https://img.youtube.com/vi/ijl8E_pBKW8/0.jpg)](https://youtu.be/ijl8E_pBKW8?si=_sBSM6O6qSzH4sMc)
