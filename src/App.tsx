@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Github, Copy, CheckCircle, AlertCircle } from 'lucide-react';
 
-type CardType = 'repository' | 'issue' | 'pull-request' | 'discussion' | 'release';
+type CardType = 'repository' | 'issue' | 'pull-request' | 'discussion' | 'release' | 'app';
 
 interface FormData {
   type: CardType;
-  user: string;
-  repo: string;
+  user?: string;
+  repo?: string;
   num?: number;
   tag?: string;
+  appname?: string;
 }
 
 interface CodeData {
@@ -25,12 +26,12 @@ function App() {
     user: '',
     repo: '',
     num: '',
-    tag: ''
+    tag: '',
+    appname: ''
   });
   
   const [previewUrl, setPreviewUrl] = useState<string>('');
-  const [redirectUrl, setRedirectUrl] = useState<string>('');
-  const [codeData, setCodeData] = useState<CodeData>({ url: '', markdown: '', html: '' });
+  const [codeData, setCodeData] = useState<CodeData>({ url: '', markdown: '', rst: '', asciidoc: '', html: '' });
   const [error, setError] = useState<string>('');
   const [imageLoaded, setImageLoaded] = useState<boolean>(false);
   const [copiedType, setCopiedType] = useState<string>('');
@@ -40,13 +41,14 @@ function App() {
     { id: 'issue', label: 'Issue', icon: '🐛' },
     { id: 'pull-request', label: 'Pull Request', icon: '🔄' },
     { id: 'discussion', label: 'Discussion', icon: '💬' },
-    { id: 'release', label: 'Release', icon: '🚀' }
+    { id: 'release', label: 'Release', icon: '🚀' },
+    { id: 'app', label: 'Marketplace App', icon: '🔌' }
   ];
 
   const generateUrls = () => {
-    const { type, user, repo, num, tag } = formData;
+    const { type, user, repo, num, tag, appname } = formData;
     
-    if (!user || !repo) {
+    if ((type !== 'app') && (!user || !repo)) {
       setError('User and repository are required');
       return;
     }
@@ -57,40 +59,51 @@ function App() {
     }
 
     if (type === 'release' && !tag) {
-      setError('Tag is required for releases');
+      setError('Tag is required for Releases');
       return;
     }
 
+    if (type === 'app' && !appname) {
+      setError('App name is required for Marketplace Apps');
+      return;
+    }
+    
     setError('');
     
     let imageUrl = '';
     let githubUrl = '';
+    // These are the constant URLs.
+    const imageUrlConst = 'https://opengraph.githubassets.com/54c6dafcd9f93d895328fdc57409345555ea517c7c4d4ad9b75d0a4208404735';
+    const githubUrlConst = 'https://github.com';
 
     switch (type) {
       case 'repository':
-        imageUrl = `https://opengraph.githubassets.com/54c6dafcd9f93d895328fdc57409345555ea517c7c4d4ad9b75d0a4208404735/${user}/${repo}`;
-        githubUrl = `https://github.com/${user}/${repo}`;
+        imageUrl = `${imageUrlConst}/${user}/${repo}`;
+        githubUrl = `${githubUrlConst}/${user}/${repo}`;
         break;
       case 'issue':
-        imageUrl = `https://opengraph.githubassets.com/b6a06c2c07355775735f11a24ef1d78d281fed7ede1bb44404de8b132b2ef3a2/${user}/${repo}/issues/${num}`;
-        githubUrl = `https://github.com/${user}/${repo}/issues/${num}`;
+        imageUrl = `${imageUrlConst}/${user}/${repo}/issues/${num}`;
+        githubUrl = `${githubUrlConst}/${user}/${repo}/issues/${num}`;
         break;
       case 'pull-request':
-        imageUrl = `https://opengraph.githubassets.com/b6a06c2c07355775735f11a24ef1d78d281fed7ede1bb44404de8b132b2ef3a2/${user}/${repo}/pull/${num}`;
-        githubUrl = `https://github.com/${user}/${repo}/pull/${num}`;
+        imageUrl = `${imageUrlConst}/${user}/${repo}/pull/${num}`;
+        githubUrl = `${githubUrlConst}/${user}/${repo}/pull/${num}`;
         break;
       case 'discussion':
-        imageUrl = `https://opengraph.githubassets.com/b615556068ae0a4eac8cdf43913fe90633b0ffb071313f8cbfb13265f1e9e52c/${user}/${repo}/discussions/${num}`;
-        githubUrl = `https://github.com/${user}/${repo}/discussions/${num}`;
+        imageUrl = `${imageUrlConst}/${user}/${repo}/discussions/${num}`;
+        githubUrl = `${githubUrlConst}/${user}/${repo}/discussions/${num}`;
         break;
       case 'release':
-        imageUrl = `https://opengraph.githubassets.com/b615556068ae0a4eac8cdf43913fe90633b0ffb071313f8cbfb13265f1e9e52c/${user}/${repo}/releases/tag/${tag}`;
-        githubUrl = `https://github.com/${user}/${repo}/releases/tag/${tag}`;
+        imageUrl = `${imageUrlConst}/${user}/${repo}/releases/tag/${tag}`;
+        githubUrl = `${githubUrlConst}/${user}/${repo}/releases/tag/${tag}`;
+        break;
+      case 'app':
+        imageUrl = `${imageUrlConst}/marketplace/${appname}`;
+        githubUrl = `${githubUrlConst}/marketplace/${appname}`;
         break;
     }
 
     setPreviewUrl(imageUrl);
-    setRedirectUrl(githubUrl);
     setImageLoaded(false);
 
     // Generate code data
@@ -111,10 +124,24 @@ function App() {
   };
 
   useEffect(() => {
+  if (formData.type === 'app') {
+    if (formData.appname) {
+      generateUrls();
+    }
+  } else if (formData.type === 'release') {
+    if (formData.user && formData.repo && formData.tag) {
+      generateUrls();
+    }
+  } else if (formData.type === 'issue' || formData.type === 'pull-request' || formData.type === 'discussion') {
+    if (formData.user && formData.repo && formData.num) {
+      generateUrls();
+    }
+  } else {
     if (formData.user && formData.repo) {
       generateUrls();
     }
-  }, [formData]);
+  }
+}, [formData, generateUrls]);
 
   const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -131,7 +158,7 @@ function App() {
   };
 
   const handleImageError = () => {
-    setError('Failed to load image. Please check if the repository/issue/PR exists.');
+    setError(`Failed to load image. Please check if the ${type} exists.`);
     setImageLoaded(false);
   };
 
@@ -184,31 +211,35 @@ function App() {
 
             {/* Input Fields */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  GitHub Username
-                </label>
-                <input
-                  type="text"
-                  value={formData.user}
-                  onChange={(e) => handleInputChange('user', e.target.value)}
-                  placeholder="e.g., octocat"
-                  className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 transition-all duration-200"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Repository Name
-                </label>
-                <input
-                  type="text"
-                  value={formData.repo}
-                  onChange={(e) => handleInputChange('repo', e.target.value)}
-                  placeholder="e.g., Hello-World"
-                  className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 transition-all duration-200"
-                />
-              </div>
+              {formData.type !== 'app' && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    GitHub Username
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.user}
+                    onChange={(e) => handleInputChange('user', e.target.value)}
+                    placeholder="e.g., octocat"
+                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 transition-all duration-200"
+                  />
+                </div>
+              )}
+              
+              {formData.type !== 'app' && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Repository Name
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.repo}
+                    onChange={(e) => handleInputChange('repo', e.target.value)}
+                    placeholder="e.g., Hello-World"
+                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 transition-all duration-200"
+                  />
+                </div>
+              )}
 
               {(formData.type === 'issue' || formData.type === 'pull-request' || formData.type === 'discussion') && (
                 <div>
@@ -240,6 +271,21 @@ function App() {
                   />
                 </div>
               )}
+
+              {formData.type === 'app' && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    GitHub Marketplace App Name
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.appname}
+                    onChange={(e) => handleInputChange('appname', e.target.value)}
+                    placeholder="e.g., github-copilot"
+                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 transition-all duration-200"
+                  />
+                </div>
+               )}
             </div>
 
             {/* Error Message */}
@@ -336,7 +382,7 @@ function App() {
                       <span className="text-sm">{copiedType === 'rst' ? 'Copied!' : 'Copy'}</span>
                     </button>
                   </div>
-                  <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
+                  <div className="bg-gray-900 rounded-lg p-4 border border-gray-700" style={{ whiteSpace: 'pre-wrap'}}>
                     <code className="text-sm text-gray-300 break-all">{codeData.rst}</code>
                   </div>
                 </div>
