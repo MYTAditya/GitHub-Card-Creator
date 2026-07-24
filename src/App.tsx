@@ -174,7 +174,7 @@ function App() {
   };
 
   const handleImageError = () => {
-    setError(`Failed to load image. Please check if the ${type} exists.`);
+    setError(`Failed to load image. Please check if the ${formData.type} exists.`);
     setImageLoaded(false);
   };
 
