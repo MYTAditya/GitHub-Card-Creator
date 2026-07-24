@@ -312,7 +312,7 @@ function App() {
                     type="text"
                     value={formData.commitid}
                     onChange={(e) => handleInputChange('commitid', e.target.value)}
-                    placeholder="e.g., b7f7be0"
+                    placeholder="e.g., b7f7be05b18944b1332b4564e6d399bb556797a8"
                     className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 transition-all duration-200"
                   />
                 </div>
