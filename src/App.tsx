@@ -49,7 +49,7 @@ function App() {
   ];
 
   const generateUrls = () => {
-    const { type, user, repo, num, tag, appname } = formData;
+    const { type, user, repo, num, tag, appname, commitid } = formData;
     
     if ((type !== 'app') && (!user || !repo)) {
       setError('User and repository are required');
