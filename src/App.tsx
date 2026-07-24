@@ -157,7 +157,7 @@ function App() {
       generateUrls();
     }
   }
-}, [formData, generateUrls]);
+}, [formData]);
 
   const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
