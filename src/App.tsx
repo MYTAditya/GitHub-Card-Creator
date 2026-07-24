@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Github, Copy, CheckCircle, AlertCircle } from 'lucide-react';
 
-type CardType = 'repository' | 'issue' | 'pull-request' | 'discussion' | 'release' | 'app';
+type CardType = 'repository' | 'issue' | 'pull-request' | 'discussion' | 'release' | 'app' | 'commit';
 
 interface FormData {
   type: CardType;
@@ -10,6 +10,7 @@ interface FormData {
   num?: number;
   tag?: string;
   appname?: string;
+  commitid?: string;
 }
 
 interface CodeData {
@@ -27,7 +28,8 @@ function App() {
     repo: '',
     num: '',
     tag: '',
-    appname: ''
+    appname: '',
+    commitid: ''
   });
   
   const [previewUrl, setPreviewUrl] = useState<string>('');
@@ -42,7 +44,8 @@ function App() {
     { id: 'pull-request', label: 'Pull Request', icon: '🔄' },
     { id: 'discussion', label: 'Discussion', icon: '💬' },
     { id: 'release', label: 'Release', icon: '🚀' },
-    { id: 'app', label: 'Marketplace App', icon: '🔌' }
+    { id: 'app', label: 'Marketplace App', icon: '🔌' },
+    { id: 'commit', label: 'Commit', icon: '📝' }
   ];
 
   const generateUrls = () => {
@@ -64,6 +67,11 @@ function App() {
     }
 
     if (type === 'app' && !appname) {
+      setError('App name is required for Marketplace Apps');
+      return;
+    }
+
+    if (type === 'commit' && !commitid) {
       setError('App name is required for Marketplace Apps');
       return;
     }
@@ -101,6 +109,10 @@ function App() {
         imageUrl = `${imageUrlConst}/marketplace/${appname}`;
         githubUrl = `${githubUrlConst}/marketplace/${appname}`;
         break;
+      case 'commit':
+        imageUrl = `${imageUrlConst}/${user}/${repo}/commit/${commitid}`;
+        githubUrl = `${githubUrlConst}/${user}/${repo}/commit/${commitid}`;
+        break;
     }
 
     setPreviewUrl(imageUrl);
@@ -130,6 +142,10 @@ function App() {
     }
   } else if (formData.type === 'release') {
     if (formData.user && formData.repo && formData.tag) {
+      generateUrls();
+    }
+  } else if (formData.type === 'commit') {
+    if (formData.user && formData.repo && formData.commitid) {
       generateUrls();
     }
   } else if (formData.type === 'issue' || formData.type === 'pull-request' || formData.type === 'discussion') {
@@ -286,6 +302,21 @@ function App() {
                   />
                 </div>
                )}
+
+              {formData.type === 'commit' && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Commit ID
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.commitid}
+                    onChange={(e) => handleInputChange('commitid', e.target.value)}
+                    placeholder="e.g., b7f7be0"
+                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 transition-all duration-200"
+                  />
+                </div>
+              )}
             </div>
 
             {/* Error Message */}
