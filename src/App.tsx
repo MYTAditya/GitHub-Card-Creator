@@ -467,7 +467,7 @@ function App() {
         {/* Footer */}
         <footer className="text-center mt-16 text-gray-500">
           <p>By &nbsp;
-            <a href="https://github.com/MYTAditya" target="dev">
+            <a href="https://github.com/MYTAditya" target="dev" className="dev-link">
               Mastered YT Aditya
             </a>
             .
