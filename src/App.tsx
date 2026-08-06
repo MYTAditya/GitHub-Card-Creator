@@ -348,6 +348,7 @@ function App() {
                     <option value="users">User</option>
                     <option value="orgs">Organization</option>
                   </select>
+                </div>
               )}
             </div>
 
