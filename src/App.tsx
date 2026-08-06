@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Github, Copy, CheckCircle, AlertCircle } from 'lucide-react';
 
-type CardType = 'repository' | 'issue' | 'pull-request' | 'discussion' | 'release' | 'app' | 'commit';
+type CardType = 'repository' | 'issue' | 'pull-request' | 'discussion' | 'release' | 'app' | 'commit' | 'project';
 
 interface FormData {
   type: CardType;
@@ -11,6 +11,7 @@ interface FormData {
   tag?: string;
   appname?: string;
   commitid?: string;
+  acctype?: 'users' | 'orgs';
 }
 
 interface CodeData {
@@ -29,7 +30,8 @@ function App() {
     num: '',
     tag: '',
     appname: '',
-    commitid: ''
+    commitid: '',
+    acctype: 'users'
   });
   
   const [previewUrl, setPreviewUrl] = useState<string>('');
@@ -45,13 +47,14 @@ function App() {
     { id: 'discussion', label: 'Discussion', icon: '💬' },
     { id: 'release', label: 'Release', icon: '🚀' },
     { id: 'app', label: 'Marketplace App', icon: '🔌' },
-    { id: 'commit', label: 'Commit', icon: '📝' }
+    { id: 'commit', label: 'Commit', icon: '🔨' },
+    { id: 'project', label: 'Project', icon: '🗺️' }
   ];
 
   const generateUrls = () => {
-    const { type, user, repo, num, tag, appname, commitid } = formData;
+    const { type, user, repo, num, tag, appname, commitid, acctype } = formData;
     
-    if ((type !== 'app') && (!user || !repo)) {
+    if ((type !== 'app' || type !== 'project') && (!user || !repo)) {
       setError('User and repository are required');
       return;
     }
@@ -72,6 +75,11 @@ function App() {
     }
 
     if (type === 'commit' && !commitid) {
+      setError('App name is required for Marketplace Apps');
+      return;
+    }
+
+    if (type === 'project' && (!user || !acctype || !num)) {
       setError('App name is required for Marketplace Apps');
       return;
     }
@@ -113,6 +121,10 @@ function App() {
         imageUrl = `${imageUrlConst}/${user}/${repo}/commit/${commitid}`;
         githubUrl = `${githubUrlConst}/${user}/${repo}/commit/${commitid}`;
         break;
+      case 'project':
+        imageUrl = `${imageUrlConst}/${acctype}/${user}/projects/${num}`;
+        githubUrl = `${githubUrlConst}/${acctype}/${user}/projects/${num}`;
+        break;
     }
 
     setPreviewUrl(imageUrl);
@@ -146,6 +158,10 @@ function App() {
     }
   } else if (formData.type === 'commit') {
     if (formData.user && formData.repo && formData.commitid) {
+      generateUrls();
+    }
+  } else if (formData.type === 'project') {
+    if (formData.user && formData.acctype && formData.num) {
       generateUrls();
     }
   } else if (formData.type === 'issue' || formData.type === 'pull-request' || formData.type === 'discussion') {
@@ -236,13 +252,13 @@ function App() {
                     type="text"
                     value={formData.user}
                     onChange={(e) => handleInputChange('user', e.target.value)}
-                    placeholder="e.g., octocat"
+                    placeholder="octocat"
                     className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 transition-all duration-200"
                   />
                 </div>
               )}
               
-              {formData.type !== 'app' && (
+              {(formData.type !== 'app' || formData.type !== 'project') && (
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-2">
                     Repository Name
@@ -251,7 +267,7 @@ function App() {
                     type="text"
                     value={formData.repo}
                     onChange={(e) => handleInputChange('repo', e.target.value)}
-                    placeholder="e.g., Hello-World"
+                    placeholder="Hello-World"
                     className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 transition-all duration-200"
                   />
                 </div>
@@ -267,7 +283,7 @@ function App() {
                     type="number"
                     value={formData.num}
                     onChange={(e) => handleInputChange('num', e.target.value)}
-                    placeholder="e.g., 1"
+                    placeholder="1"
                     className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 transition-all duration-200"
                   />
                 </div>
@@ -282,7 +298,7 @@ function App() {
                     type="text"
                     value={formData.tag}
                     onChange={(e) => handleInputChange('tag', e.target.value)}
-                    placeholder="e.g., 1.0.0"
+                    placeholder="1.0.0"
                     className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 transition-all duration-200"
                   />
                 </div>
@@ -297,7 +313,7 @@ function App() {
                     type="text"
                     value={formData.appname}
                     onChange={(e) => handleInputChange('appname', e.target.value)}
-                    placeholder="e.g., github-copilot"
+                    placeholder="checkout"
                     className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 transition-all duration-200"
                   />
                 </div>
@@ -312,11 +328,36 @@ function App() {
                     type="text"
                     value={formData.commitid}
                     onChange={(e) => handleInputChange('commitid', e.target.value)}
-                    placeholder="e.g., b7f7be05b18944b1332b4564e6d399bb556797a8"
+                    placeholder="b7f7be05b18944b1332b4564e6d399bb556797a8"
                     className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 transition-all duration-200"
                   />
                 </div>
               )}
+              
+              {formData.type === 'project' && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Account Type
+                  </label>
+                  <select
+                    value={formData.acctype}
+                    onChange={(e) => handleInputChange('acctype', e.target.value as 'users' | 'orgs')}
+                    className="w-full md:w-64 px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-lime-400 focus:ring-2 focus:ring-lime-400/40"
+                  >
+                    <option value="users">User</option>
+                    <option value="orgs">Organization</option>
+                  </select>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Project Number
+                  </label>
+                  <input
+                    type="number"
+                    value={formData.num}
+                    onChange={(e) => handleInputChange('num', e.target.value)}
+                    placeholder="1"
+                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 transition-all duration-200"
+                  />
+                </div>
             </div>
 
             {/* Error Message */}
