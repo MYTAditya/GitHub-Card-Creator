@@ -342,11 +342,12 @@ function App() {
                   <select
                     value={formData.acctype}
                     onChange={(e) => handleInputChange('acctype', e.target.value as 'users' | 'orgs')}
-                    className="w-full md:w-64 px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-lime-400 focus:ring-2 focus:ring-lime-400/40"
+                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 transition-all duration-200"
                   >
                     <option value="users">User</option>
                     <option value="orgs">Organization</option>
                   </select>
+                  
                   <label className="block text-sm font-medium text-gray-300 mb-2">
                     Project Number
                   </label>
@@ -508,7 +509,7 @@ function App() {
 
         {/* Footer */}
         <footer className="text-center mt-16 text-gray-500">
-          <p>By &nbsp;
+          <p>By 
             <a href="https://github.com/MYTAditya" target="dev" className="dev-link">
               Mastered YT Aditya
             </a>
