@@ -54,7 +54,7 @@ function App() {
   const generateUrls = () => {
     const { type, user, repo, num, tag, appname, commitid, acctype } = formData;
     
-    if ((type !== 'app' || type !== 'project') && (!user || !repo)) {
+    if ((type !== 'app' && type !== 'project') && (!user || !repo)) {
       setError('User and repository are required');
       return;
     }
@@ -75,12 +75,12 @@ function App() {
     }
 
     if (type === 'commit' && !commitid) {
-      setError('App name is required for Marketplace Apps');
+      setError('Commit ID is required for Commits');
       return;
     }
 
     if (type === 'project' && (!user || !acctype || !num)) {
-      setError('App name is required for Marketplace Apps');
+      setError('User, Account Type and Project Number is required for Projects');
       return;
     }
     
@@ -258,7 +258,7 @@ function App() {
                 </div>
               )}
               
-              {(formData.type !== 'app' || formData.type !== 'project') && (
+              {(formData.type !== 'app' && formData.type !== 'project') && (
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-2">
                     Repository Name
