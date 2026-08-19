@@ -147,34 +147,6 @@ function App() {
     });
   };
 
-  useEffect(() => {
-  if (formData.type === 'app') {
-    if (formData.appname) {
-      generateUrls();
-    }
-  } else if (formData.type === 'release') {
-    if (formData.user && formData.repo && formData.tag) {
-      generateUrls();
-    }
-  } else if (formData.type === 'commit') {
-    if (formData.user && formData.repo && formData.commitid) {
-      generateUrls();
-    }
-  } else if (formData.type === 'project') {
-    if (formData.user && formData.acctype && formData.num) {
-      generateUrls();
-    }
-  } else if (formData.type === 'issue' || formData.type === 'pull-request' || formData.type === 'discussion') {
-    if (formData.user && formData.repo && formData.num) {
-      generateUrls();
-    }
-  } else {
-    if (formData.user && formData.repo) {
-      generateUrls();
-    }
-  }
-}, [formData]);
-
   const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
