@@ -352,6 +352,17 @@ function App() {
               )}
             </div>
 
+            {/* Get Card Button */}
+            <div className="mt-8 text-center">
+              <button
+                onClick={generateUrls}
+                style={{ backgroundColor: '#a9e43a', color: '#000000' }}
+                className="px-8 py-3 rounded-xl font-semibold hover:opacity-90 active:scale-95 transition-all duration-200 shadow-lg"
+              >
+                Get Card
+              </button>
+            </div>
+
             {/* Error Message */}
             {error && (
               <div className="mt-6 p-4 bg-red-900/20 border border-red-500 rounded-xl">
