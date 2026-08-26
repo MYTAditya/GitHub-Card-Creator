@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Github, Copy, CheckCircle, AlertCircle, ExternalLink, Image as ImageIcon, Download } from 'lucide-react';
 
 type CardType = 'repository' | 'issue' | 'pull-request' | 'discussion' | 'release' | 'app' | 'commit' | 'project';
