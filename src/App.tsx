@@ -211,14 +211,14 @@ function App() {
             </h1>
           </div>
           <p className="text-gray-400 text-lg">
-            Generate official GitHub cards for Repos, Issues, PRs, Discussions & Releases.
+            Generate official GitHub cards for Repos, Issues, PRs, Discussions, Releases, and more!
           </p>
         </header>
 
         <div className="max-w-4xl mx-auto">
           {/* Form Section */}
           <div className="bg-gray-800 rounded-2xl p-8 mb-8 shadow-xl">
-            <h2 className="text-2xl font-semibold mb-6 text-lime-400">Configure Your Card</h2>
+            <h2 className="text-2xl font-semibold mb-6 text-lime-400">Card Configuration</h2>
 
             {/* Note */}
             <div className="mb-8 p-4 bg-yellow-400/10 border border-yellow-500/40 rounded-xl">
@@ -324,7 +324,7 @@ function App() {
                     type="text"
                     value={formData.appname}
                     onChange={(e) => handleInputChange('appname', e.target.value)}
-                    placeholder="checkout"
+                    placeholder="microsoft-teams-for-github"
                     className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 transition-all duration-200"
                   />
                 </div>
@@ -333,7 +333,7 @@ function App() {
               {formData.type === 'commit' && (
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-2">
-                    Commit ID
+                    Full Commit ID
                   </label>
                   <input
                     type="text"
@@ -387,7 +387,7 @@ function App() {
           {/* Preview Section */}
           {previewUrl && !error && (
             <div className="bg-gray-800 rounded-2xl p-8 mb-8 shadow-xl">
-              <h2 className="text-2xl font-semibold mb-6 text-lime-400">Preview</h2>
+              <h2 className="text-2xl font-semibold mb-6 text-lime-400">Card Preview</h2>
 
               <div className="text-center">
                 <div className="inline-block relative">
@@ -431,7 +431,7 @@ function App() {
           {/* Code Section */}
           {previewUrl && imageLoaded && (
             <div className="bg-gray-800 rounded-2xl p-8 shadow-xl">
-              <h2 className="text-2xl font-semibold mb-6 text-lime-400">Generated Code</h2>
+              <h2 className="text-2xl font-semibold mb-6 text-lime-400">Card Codes</h2>
 
               <div className="space-y-6">
                 {/* URL */}
