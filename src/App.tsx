@@ -33,13 +33,12 @@ function App() {
     commitid: '',
     acctype: 'users'
   });
-  
+
   const [previewUrl, setPreviewUrl] = useState<string>('');
   const [codeData, setCodeData] = useState<CodeData>({ url: '', markdown: '', rst: '', asciidoc: '', html: '' });
   const [error, setError] = useState<string>('');
   const [imageLoaded, setImageLoaded] = useState<boolean>(false);
   const [copiedType, setCopiedType] = useState<string>('');
-  const [isChecking, setIsChecking] = useState<boolean>(false);
 
   const cardTypes = [
     { id: 'repository', label: 'Repository', icon: '📁' },
@@ -52,65 +51,9 @@ function App() {
     { id: 'project', label: 'Project', icon: '🗺️' }
   ];
 
-  // github.com HTML pages don't send CORS headers, so a direct fetch() to
-  // githubUrl from the browser gets blocked before we can read the status
-  // code. api.github.com does send CORS headers and returns real 404s, so
-  // we use it to verify existence for the types it supports.
-  // Returns true (exists), false (confirmed not found), or null (couldn't
-  // be verified - e.g. discussions/projects aren't exposed via this API).
-  const checkResourceExists = async (
-    type: CardType,
-    data: FormData
-  ): Promise<boolean | null> => {
-    const { user, repo, num, tag, appname, commitid, acctype } = data;
-    let apiUrl = '';
-
-    switch (type) {
-      case 'repository':
-        apiUrl = `https://api.github.com/repos/${user}/${repo}`;
-        break;
-      case 'issue':
-        apiUrl = `https://api.github.com/repos/${user}/${repo}/issues/${num}`;
-        break;
-      case 'pull-request':
-        apiUrl = `https://api.github.com/repos/${user}/${repo}/pulls/${num}`;
-        break;
-      case 'release':
-        apiUrl = `https://api.github.com/repos/${user}/${repo}/releases/tags/${tag}`;
-        break;
-      case 'commit':
-        apiUrl = `https://api.github.com/repos/${user}/${repo}/commits/${commitid}`;
-        break;
-      case 'app':
-        apiUrl = `https://api.github.com/apps/${appname}`;
-        break;
-      case 'discussion':
-      case 'project':
-        // Not available via the REST API without extra auth/GraphQL.
-        return null;
-      default:
-        return null;
-    }
-
-    try {
-      const response = await fetch(apiUrl, {
-        headers: { Accept: 'application/vnd.github+json' }
-      });
-      if (response.status === 404) {
-        return false;
-      }
-      return true;
-    } catch (err) {
-      // Network error / rate limit / CORS hiccup - don't block the user,
-      // just skip verification and let the image itself load.
-      console.error('Existence check failed:', err);
-      return null;
-    }
-  };
-
-  const generateUrls = async () => {
+  const generateUrls = () => {
     const { type, user, repo, num, tag, appname, commitid, acctype } = formData;
-    
+
     if ((type !== 'app' && type !== 'project') && (!user || !repo)) {
       setError('User and repository are required');
       return;
@@ -140,22 +83,9 @@ function App() {
       setError('User, Account Type and Project Number is required for Projects');
       return;
     }
-    
+
     setError('');
-    setIsChecking(true);
 
-    const exists = await checkResourceExists(type, formData);
-
-    if (exists === false) {
-      setError(`${type} not exists`);
-      setIsChecking(false);
-      setPreviewUrl('');
-      setImageLoaded(false);
-      return;
-    }
-
-    setIsChecking(false);
-    
     let imageUrl = '';
     let githubUrl = '';
     // These are the constant URLs.
@@ -207,7 +137,7 @@ function App() {
    :target: ${githubUrl}`;
     const asciidoc = `image:${imageUrl}[GitHub Card,link="${githubUrl}"]`;
     const html = `<a href="${githubUrl}" target="_blank"><img src="${imageUrl}" alt="GitHub Card" /></a>`;
-    
+
     setCodeData({
       url: imageUrl,
       markdown,
@@ -216,6 +146,34 @@ function App() {
       html
     });
   };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -232,7 +190,7 @@ function App() {
   };
 
   const handleImageError = () => {
-    setError('Server is overloaded. Please try again later.');
+    setError(`Failed to load image. Please check if the ${formData.type} exists.`);
     setImageLoaded(false);
   };
 
@@ -261,7 +219,7 @@ function App() {
           {/* Form Section */}
           <div className="bg-gray-800 rounded-2xl p-8 mb-8 shadow-xl">
             <h2 className="text-2xl font-semibold mb-6 text-lime-400">Configure Your Card</h2>
-            
+
             {/* Card Type Selection */}
             <div className="mb-8">
               <label className="block text-sm font-medium text-gray-300 mb-4">Card Type</label>
@@ -299,7 +257,7 @@ function App() {
                   />
                 </div>
               )}
-              
+
               {(formData.type !== 'app' && formData.type !== 'project') && (
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-2">
@@ -376,7 +334,7 @@ function App() {
                   />
                 </div>
               )}
-              
+
               {formData.type === 'project' && (
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-2">
@@ -398,11 +356,10 @@ function App() {
             <div className="mt-8 text-center">
               <button
                 onClick={generateUrls}
-                disabled={isChecking}
                 style={{ backgroundColor: '#a9e43a', color: '#000000' }}
-                className="px-8 py-3 rounded-xl font-semibold hover:opacity-90 active:scale-95 transition-all duration-200 shadow-lg disabled:opacity-60 disabled:cursor-not-allowed"
+                className="px-8 py-3 rounded-xl font-semibold hover:opacity-90 active:scale-95 transition-all duration-200 shadow-lg"
               >
-                {isChecking ? 'Checking...' : 'Get Card'}
+                Get Card
               </button>
             </div>
 
@@ -421,7 +378,7 @@ function App() {
           {previewUrl && !error && (
             <div className="bg-gray-800 rounded-2xl p-8 mb-8 shadow-xl">
               <h2 className="text-2xl font-semibold mb-6 text-lime-400">Preview</h2>
-              
+
               <div className="text-center">
                 <div className="inline-block relative">
                   <img
@@ -440,7 +397,7 @@ function App() {
           {previewUrl && imageLoaded && (
             <div className="bg-gray-800 rounded-2xl p-8 shadow-xl">
               <h2 className="text-2xl font-semibold mb-6 text-lime-400">Generated Code</h2>
-              
+
               <div className="space-y-6">
                 {/* URL */}
                 <div>
