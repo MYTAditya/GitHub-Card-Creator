@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Github, Copy, CheckCircle, AlertCircle } from 'lucide-react';
+import { Github, Copy, CheckCircle, AlertCircle, ExternalLink, Image as ImageIcon, Download } from 'lucide-react';
 
 type CardType = 'repository' | 'issue' | 'pull-request' | 'discussion' | 'release' | 'app' | 'commit' | 'project';
 
@@ -35,6 +35,7 @@ function App() {
   });
 
   const [previewUrl, setPreviewUrl] = useState<string>('');
+  const [githubUrl, setGithubUrl] = useState<string>('');
   const [codeData, setCodeData] = useState<CodeData>({ url: '', markdown: '', rst: '', asciidoc: '', html: '' });
   const [error, setError] = useState<string>('');
   const [imageLoaded, setImageLoaded] = useState<boolean>(false);
@@ -128,6 +129,7 @@ function App() {
     }
 
     setPreviewUrl(imageUrl);
+    setGithubUrl(githubUrl);
     setImageLoaded(false);
 
     // Generate code data
@@ -147,34 +149,6 @@ function App() {
     });
   };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
@@ -190,13 +164,39 @@ function App() {
   };
 
   const handleImageError = () => {
-    setError(`Failed to load image. Please check if the ${formData.type} exists.`);
+    setError(`429 Error came from GitHub. Please try again later.`);
     setImageLoaded(false);
   };
 
   const handleImageLoad = () => {
     setImageLoaded(true);
     setError('');
+  };
+
+  const openInNewTab = (url: string) => {
+    if (url) {
+      window.open(url, '_blank', 'noopener,noreferrer');
+    }
+  };
+
+  const handleDownloadImage = async () => {
+    if (!previewUrl) return;
+    try {
+      const response = await fetch(previewUrl);
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = `github-card-${formData.type}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(blobUrl);
+    } catch (err) {
+      console.error('Failed to download image: ', err);
+      // Fallback: open the image in a new tab so the user can save it manually
+      openInNewTab(previewUrl);
+    }
   };
 
   return (
@@ -219,6 +219,16 @@ function App() {
           {/* Form Section */}
           <div className="bg-gray-800 rounded-2xl p-8 mb-8 shadow-xl">
             <h2 className="text-2xl font-semibold mb-6 text-lime-400">Configure Your Card</h2>
+
+            {/* Note */}
+            <div className="mb-8 p-4 bg-yellow-400/10 border border-yellow-500/40 rounded-xl">
+              <div className="flex items-start gap-2 text-yellow-300">
+                <AlertCircle className="w-5 h-5 mt-0.5 flex-shrink-0" />
+                <span className="text-sm">
+                  Note: Always enter correct, existing GitHub information (username, repository, number, tag, etc.). Incorrect details will cause GitHub to return an error banner image instead of a valid card.
+                </span>
+              </div>
+            </div>
 
             {/* Card Type Selection */}
             <div className="mb-8">
@@ -352,14 +362,14 @@ function App() {
               )}
             </div>
 
-            {/* Get Card Button */}
+            {/* Generate Card Button */}
             <div className="mt-8 text-center">
               <button
                 onClick={generateUrls}
                 style={{ backgroundColor: '#a9e43a', color: '#000000' }}
                 className="px-8 py-3 rounded-xl font-semibold hover:opacity-90 active:scale-95 transition-all duration-200 shadow-lg"
               >
-                Get Card
+                Generate Card
               </button>
             </div>
 
@@ -388,6 +398,31 @@ function App() {
                     onError={handleImageError}
                     className="rounded-xl shadow-lg cursor-pointer hover:shadow-2xl transition-all duration-300 hover:scale-105 max-w-full h-auto"
                   />
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex flex-wrap items-center justify-center gap-3 mt-6">
+                  <button
+                    onClick={() => openInNewTab(githubUrl)}
+                    className="flex items-center gap-2 px-4 py-2 bg-lime-400/10 hover:bg-lime-400/20 text-lime-400 rounded-xl transition-colors duration-200 border border-lime-400/30"
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                    <span className="text-sm font-medium">Open Link</span>
+                  </button>
+                  <button
+                    onClick={() => openInNewTab(previewUrl)}
+                    className="flex items-center gap-2 px-4 py-2 bg-lime-400/10 hover:bg-lime-400/20 text-lime-400 rounded-xl transition-colors duration-200 border border-lime-400/30"
+                  >
+                    <ImageIcon className="w-4 h-4" />
+                    <span className="text-sm font-medium">Open Image</span>
+                  </button>
+                  <button
+                    onClick={handleDownloadImage}
+                    className="flex items-center gap-2 px-4 py-2 bg-lime-400/10 hover:bg-lime-400/20 text-lime-400 rounded-xl transition-colors duration-200 border border-lime-400/30"
+                  >
+                    <Download className="w-4 h-4" />
+                    <span className="text-sm font-medium">Download Image</span>
+                  </button>
                 </div>
               </div>
             </div>
