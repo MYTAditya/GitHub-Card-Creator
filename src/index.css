@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 .dev-link {
   @apply text-[#a9e43a] no-underline transition-all duration-200;
