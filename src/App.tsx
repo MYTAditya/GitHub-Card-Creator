@@ -1,14 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { Github, Copy, CheckCircle, AlertCircle } from 'lucide-react';
+import React, { useState } from 'react';
+import { Github, Copy, CheckCircle, AlertCircle, ExternalLink, Image as ImageIcon, Download } from 'lucide-react';
 
-type CardType = 'repository' | 'issue' | 'pull-request' | 'discussion' | 'release';
+type CardType = 'repository' | 'issue' | 'pull-request' | 'discussion' | 'release' | 'app' | 'commit' | 'project';
 
 interface FormData {
   type: CardType;
-  user: string;
-  repo: string;
+  user?: string;
+  repo?: string;
   num?: number;
   tag?: string;
+  appname?: string;
+  commitid?: string;
+  acctype?: 'users' | 'orgs';
 }
 
 interface CodeData {
@@ -25,12 +28,15 @@ function App() {
     user: '',
     repo: '',
     num: '',
-    tag: ''
+    tag: '',
+    appname: '',
+    commitid: '',
+    acctype: 'users'
   });
-  
+
   const [previewUrl, setPreviewUrl] = useState<string>('');
-  const [redirectUrl, setRedirectUrl] = useState<string>('');
-  const [codeData, setCodeData] = useState<CodeData>({ url: '', markdown: '', html: '' });
+  const [githubUrl, setGithubUrl] = useState<string>('');
+  const [codeData, setCodeData] = useState<CodeData>({ url: '', markdown: '', rst: '', asciidoc: '', html: '' });
   const [error, setError] = useState<string>('');
   const [imageLoaded, setImageLoaded] = useState<boolean>(false);
   const [copiedType, setCopiedType] = useState<string>('');
@@ -40,13 +46,16 @@ function App() {
     { id: 'issue', label: 'Issue', icon: '🐛' },
     { id: 'pull-request', label: 'Pull Request', icon: '🔄' },
     { id: 'discussion', label: 'Discussion', icon: '💬' },
-    { id: 'release', label: 'Release', icon: '🚀' }
+    { id: 'release', label: 'Release', icon: '🚀' },
+    { id: 'app', label: 'Marketplace App', icon: '🔌' },
+    { id: 'commit', label: 'Commit', icon: '🔨' },
+    { id: 'project', label: 'Project', icon: '🗺️' }
   ];
 
   const generateUrls = () => {
-    const { type, user, repo, num, tag } = formData;
-    
-    if (!user || !repo) {
+    const { type, user, repo, num, tag, appname, commitid, acctype } = formData;
+
+    if ((type !== 'app' && type !== 'project') && (!user || !repo)) {
       setError('User and repository are required');
       return;
     }
@@ -57,40 +66,70 @@ function App() {
     }
 
     if (type === 'release' && !tag) {
-      setError('Tag is required for releases');
+      setError('Tag is required for Releases');
+      return;
+    }
+
+    if (type === 'app' && !appname) {
+      setError('App name is required for Marketplace Apps');
+      return;
+    }
+
+    if (type === 'commit' && !commitid) {
+      setError('Commit ID is required for Commits');
+      return;
+    }
+
+    if (type === 'project' && (!user || !acctype || !num)) {
+      setError('User, Account Type and Project Number is required for Projects');
       return;
     }
 
     setError('');
-    
+
     let imageUrl = '';
     let githubUrl = '';
+    // These are the constant URLs.
+    const imageUrlConst = 'https://opengraph.githubassets.com/54c6dafcd9f93d895328fdc57409345555ea517c7c4d4ad9b75d0a4208404735';
+    const githubUrlConst = 'https://github.com';
 
     switch (type) {
       case 'repository':
-        imageUrl = `https://opengraph.githubassets.com/54c6dafcd9f93d895328fdc57409345555ea517c7c4d4ad9b75d0a4208404735/${user}/${repo}`;
-        githubUrl = `https://github.com/${user}/${repo}`;
+        imageUrl = `${imageUrlConst}/${user}/${repo}`;
+        githubUrl = `${githubUrlConst}/${user}/${repo}`;
         break;
       case 'issue':
-        imageUrl = `https://opengraph.githubassets.com/b6a06c2c07355775735f11a24ef1d78d281fed7ede1bb44404de8b132b2ef3a2/${user}/${repo}/issues/${num}`;
-        githubUrl = `https://github.com/${user}/${repo}/issues/${num}`;
+        imageUrl = `${imageUrlConst}/${user}/${repo}/issues/${num}`;
+        githubUrl = `${githubUrlConst}/${user}/${repo}/issues/${num}`;
         break;
       case 'pull-request':
-        imageUrl = `https://opengraph.githubassets.com/b6a06c2c07355775735f11a24ef1d78d281fed7ede1bb44404de8b132b2ef3a2/${user}/${repo}/pull/${num}`;
-        githubUrl = `https://github.com/${user}/${repo}/pull/${num}`;
+        imageUrl = `${imageUrlConst}/${user}/${repo}/pull/${num}`;
+        githubUrl = `${githubUrlConst}/${user}/${repo}/pull/${num}`;
         break;
       case 'discussion':
-        imageUrl = `https://opengraph.githubassets.com/b615556068ae0a4eac8cdf43913fe90633b0ffb071313f8cbfb13265f1e9e52c/${user}/${repo}/discussions/${num}`;
-        githubUrl = `https://github.com/${user}/${repo}/discussions/${num}`;
+        imageUrl = `${imageUrlConst}/${user}/${repo}/discussions/${num}`;
+        githubUrl = `${githubUrlConst}/${user}/${repo}/discussions/${num}`;
         break;
       case 'release':
-        imageUrl = `https://opengraph.githubassets.com/b615556068ae0a4eac8cdf43913fe90633b0ffb071313f8cbfb13265f1e9e52c/${user}/${repo}/releases/tag/${tag}`;
-        githubUrl = `https://github.com/${user}/${repo}/releases/tag/${tag}`;
+        imageUrl = `${imageUrlConst}/${user}/${repo}/releases/tag/${tag}`;
+        githubUrl = `${githubUrlConst}/${user}/${repo}/releases/tag/${tag}`;
+        break;
+      case 'app':
+        imageUrl = `${imageUrlConst}/marketplace/${appname}`;
+        githubUrl = `${githubUrlConst}/marketplace/${appname}`;
+        break;
+      case 'commit':
+        imageUrl = `${imageUrlConst}/${user}/${repo}/commit/${commitid}`;
+        githubUrl = `${githubUrlConst}/${user}/${repo}/commit/${commitid}`;
+        break;
+      case 'project':
+        imageUrl = `${imageUrlConst}/${acctype}/${user}/projects/${num}`;
+        githubUrl = `${githubUrlConst}/${acctype}/${user}/projects/${num}`;
         break;
     }
 
     setPreviewUrl(imageUrl);
-    setRedirectUrl(githubUrl);
+    setGithubUrl(githubUrl);
     setImageLoaded(false);
 
     // Generate code data
@@ -100,7 +139,7 @@ function App() {
    :target: ${githubUrl}`;
     const asciidoc = `image:${imageUrl}[GitHub Card,link="${githubUrl}"]`;
     const html = `<a href="${githubUrl}" target="_blank"><img src="${imageUrl}" alt="GitHub Card" /></a>`;
-    
+
     setCodeData({
       url: imageUrl,
       markdown,
@@ -109,12 +148,6 @@ function App() {
       html
     });
   };
-
-  useEffect(() => {
-    if (formData.user && formData.repo) {
-      generateUrls();
-    }
-  }, [formData]);
 
   const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -131,13 +164,39 @@ function App() {
   };
 
   const handleImageError = () => {
-    setError('Failed to load image. Please check if the repository/issue/PR exists.');
+    setError(`429 Error came from GitHub. Please try again later.`);
     setImageLoaded(false);
   };
 
   const handleImageLoad = () => {
     setImageLoaded(true);
     setError('');
+  };
+
+  const openInNewTab = (url: string) => {
+    if (url) {
+      window.open(url, '_blank', 'noopener,noreferrer');
+    }
+  };
+
+  const handleDownloadImage = async () => {
+    if (!previewUrl) return;
+    try {
+      const response = await fetch(previewUrl);
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = `github-card-${formData.type}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(blobUrl);
+    } catch (err) {
+      console.error('Failed to download image: ', err);
+      // Fallback: open the image in a new tab so the user can save it manually
+      openInNewTab(previewUrl);
+    }
   };
 
   return (
@@ -152,15 +211,25 @@ function App() {
             </h1>
           </div>
           <p className="text-gray-400 text-lg">
-            Generate official GitHub cards for Repos, Issues, PRs, Discussions & Releases.
+            Generate official GitHub cards for Repos, Issues, PRs, Discussions, Releases, and more!
           </p>
         </header>
 
         <div className="max-w-4xl mx-auto">
           {/* Form Section */}
           <div className="bg-gray-800 rounded-2xl p-8 mb-8 shadow-xl">
-            <h2 className="text-2xl font-semibold mb-6 text-lime-400">Configure Your Card</h2>
-            
+            <h2 className="text-2xl font-semibold mb-6 text-lime-400">Card Configuration</h2>
+
+            {/* Note */}
+            <div className="mb-8 p-4 bg-yellow-400/10 border border-yellow-500/40 rounded-xl">
+              <div className="flex items-start gap-2 text-yellow-300">
+                <AlertCircle className="w-5 h-5 mt-0.5 flex-shrink-0" />
+                <span className="text-sm">
+                  Note: Always enter correct, existing GitHub information (username, repository, number, tag, etc.). Incorrect details will cause GitHub to return an error banner image instead of a valid card.
+                </span>
+              </div>
+            </div>
+
             {/* Card Type Selection */}
             <div className="mb-8">
               <label className="block text-sm font-medium text-gray-300 mb-4">Card Type</label>
@@ -184,43 +253,48 @@ function App() {
 
             {/* Input Fields */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  GitHub Username
-                </label>
-                <input
-                  type="text"
-                  value={formData.user}
-                  onChange={(e) => handleInputChange('user', e.target.value)}
-                  placeholder="e.g., octocat"
-                  className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 transition-all duration-200"
-                />
-              </div>
+              {formData.type !== 'app' && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    GitHub Username
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.user}
+                    onChange={(e) => handleInputChange('user', e.target.value)}
+                    placeholder="octocat"
+                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 transition-all duration-200"
+                  />
+                </div>
+              )}
 
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Repository Name
-                </label>
-                <input
-                  type="text"
-                  value={formData.repo}
-                  onChange={(e) => handleInputChange('repo', e.target.value)}
-                  placeholder="e.g., Hello-World"
-                  className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 transition-all duration-200"
-                />
-              </div>
+              {(formData.type !== 'app' && formData.type !== 'project') && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Repository Name
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.repo}
+                    onChange={(e) => handleInputChange('repo', e.target.value)}
+                    placeholder="Hello-World"
+                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 transition-all duration-200"
+                  />
+                </div>
+              )}
 
-              {(formData.type === 'issue' || formData.type === 'pull-request' || formData.type === 'discussion') && (
+              {(formData.type === 'issue' || formData.type === 'pull-request' || formData.type === 'discussion' || formData.type === 'project') && (
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-2">
                     {formData.type === 'issue' ? 'Issue Number' : 
-                     formData.type === 'pull-request' ? 'Pull Request Number' : 'Discussion Number'}
+                     formData.type === 'pull-request' ? 'Pull Request Number' :
+                     formData.type === 'project' ? 'Project Number' : 'Discussion Number'}
                   </label>
                   <input
                     type="number"
                     value={formData.num}
                     onChange={(e) => handleInputChange('num', e.target.value)}
-                    placeholder="e.g., 1"
+                    placeholder="1"
                     className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 transition-all duration-200"
                   />
                 </div>
@@ -235,11 +309,68 @@ function App() {
                     type="text"
                     value={formData.tag}
                     onChange={(e) => handleInputChange('tag', e.target.value)}
-                    placeholder="e.g., 1.0.0"
+                    placeholder="1.0.0"
                     className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 transition-all duration-200"
                   />
                 </div>
               )}
+
+              {formData.type === 'app' && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    GitHub Marketplace App Name
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.appname}
+                    onChange={(e) => handleInputChange('appname', e.target.value)}
+                    placeholder="microsoft-teams-for-github"
+                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 transition-all duration-200"
+                  />
+                </div>
+               )}
+
+              {formData.type === 'commit' && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Full Commit ID
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.commitid}
+                    onChange={(e) => handleInputChange('commitid', e.target.value)}
+                    placeholder="b7f7be05b18944b1332b4564e6d399bb556797a8"
+                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 transition-all duration-200"
+                  />
+                </div>
+              )}
+
+              {formData.type === 'project' && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Account Type
+                  </label>
+                  <select
+                    value={formData.acctype}
+                    onChange={(e) => handleInputChange('acctype', e.target.value as 'users' | 'orgs')}
+                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-lime-400 focus:ring-2 focus:ring-lime-400/20 transition-all duration-200"
+                  >
+                    <option value="users">User</option>
+                    <option value="orgs">Organization</option>
+                  </select>
+                </div>
+              )}
+            </div>
+
+            {/* Generate Card Button */}
+            <div className="mt-8 text-center">
+              <button
+                onClick={generateUrls}
+                style={{ backgroundColor: '#a9e43a', color: '#000000' }}
+                className="px-8 py-3 rounded-xl font-semibold hover:opacity-90 active:scale-95 transition-all duration-200 shadow-lg"
+              >
+                Generate Card
+              </button>
             </div>
 
             {/* Error Message */}
@@ -256,8 +387,8 @@ function App() {
           {/* Preview Section */}
           {previewUrl && !error && (
             <div className="bg-gray-800 rounded-2xl p-8 mb-8 shadow-xl">
-              <h2 className="text-2xl font-semibold mb-6 text-lime-400">Preview</h2>
-              
+              <h2 className="text-2xl font-semibold mb-6 text-lime-400">Card Preview</h2>
+
               <div className="text-center">
                 <div className="inline-block relative">
                   <img
@@ -268,6 +399,31 @@ function App() {
                     className="rounded-xl shadow-lg cursor-pointer hover:shadow-2xl transition-all duration-300 hover:scale-105 max-w-full h-auto"
                   />
                 </div>
+
+                {/* Action Buttons */}
+                <div className="flex flex-wrap items-center justify-center gap-3 mt-6">
+                  <button
+                    onClick={() => openInNewTab(githubUrl)}
+                    className="flex items-center gap-2 px-4 py-2 bg-lime-400/10 hover:bg-lime-400/20 text-lime-400 rounded-xl transition-colors duration-200 border border-lime-400/30"
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                    <span className="text-sm font-medium">Open Link</span>
+                  </button>
+                  <button
+                    onClick={() => openInNewTab(previewUrl)}
+                    className="flex items-center gap-2 px-4 py-2 bg-lime-400/10 hover:bg-lime-400/20 text-lime-400 rounded-xl transition-colors duration-200 border border-lime-400/30"
+                  >
+                    <ImageIcon className="w-4 h-4" />
+                    <span className="text-sm font-medium">Open Image</span>
+                  </button>
+                  <button
+                    onClick={handleDownloadImage}
+                    className="flex items-center gap-2 px-4 py-2 bg-lime-400/10 hover:bg-lime-400/20 text-lime-400 rounded-xl transition-colors duration-200 border border-lime-400/30"
+                  >
+                    <Download className="w-4 h-4" />
+                    <span className="text-sm font-medium">Download Image</span>
+                  </button>
+                </div>
               </div>
             </div>
           )}
@@ -275,8 +431,8 @@ function App() {
           {/* Code Section */}
           {previewUrl && imageLoaded && (
             <div className="bg-gray-800 rounded-2xl p-8 shadow-xl">
-              <h2 className="text-2xl font-semibold mb-6 text-lime-400">Generated Code</h2>
-              
+              <h2 className="text-2xl font-semibold mb-6 text-lime-400">Card Codes</h2>
+
               <div className="space-y-6">
                 {/* URL */}
                 <div>
@@ -336,7 +492,7 @@ function App() {
                       <span className="text-sm">{copiedType === 'rst' ? 'Copied!' : 'Copy'}</span>
                     </button>
                   </div>
-                  <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
+                  <div className="bg-gray-900 rounded-lg p-4 border border-gray-700" style={{ whiteSpace: 'pre-wrap'}}>
                     <code className="text-sm text-gray-300 break-all">{codeData.rst}</code>
                   </div>
                 </div>
@@ -389,8 +545,8 @@ function App() {
 
         {/* Footer */}
         <footer className="text-center mt-16 text-gray-500">
-          <p>By &nbsp;
-            <a href="https://github.com/MYTAditya" target="dev">
+          <p>By&nbsp;
+            <a href="https://github.com/MYTAditya" target="dev" className="dev-link">
               Mastered YT Aditya
             </a>
             .

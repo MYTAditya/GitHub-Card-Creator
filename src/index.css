@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.dev-link {
+  @apply text-[#a9e43a] no-underline transition-all duration-200;
+}
+
+.dev-link:active {
+  @apply underline;
+}
