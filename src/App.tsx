@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Github, Copy, CheckCircle, AlertCircle, ExternalLink, Image as ImageIcon, Download } from 'lucide-react';
+import { Copy, CheckCircle, AlertCircle, ExternalLink, Image as ImageIcon, Download } from "lucide-react";
+import { FaGithub } from "react-icons/fa";
 
 type CardType = 'repository' | 'issue' | 'pull-request' | 'discussion' | 'release' | 'app' | 'commit' | 'project';
 
@@ -205,7 +206,7 @@ function App() {
         {/* Header */}
         <header className="text-center mb-12">
           <div className="flex items-center justify-center gap-3 mb-4">
-            <Github className="w-8 h-8 text-lime-400" />
+            <FaGithub className="w-8 h-8 text-lime-400" />
             <h1 className="text-4xl font-bold text-lime-400 bg-clip-text">
               GitHub Card Creator
             </h1>
