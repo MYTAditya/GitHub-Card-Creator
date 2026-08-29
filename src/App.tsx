@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Copy, CheckCircle, AlertCircle, ExternalLink, Image as ImageIcon, Download } from "lucide-react";
-import { FaGithub } from "react-icons/fa";
+import { Copy, CheckCircle, AlertCircle, ExternalLink, Image as ImageIcon, Download } from 'lucide-react';
+import { FaGithub } from 'react-icons/fa';
 
 type CardType = 'repository' | 'issue' | 'pull-request' | 'discussion' | 'release' | 'app' | 'commit' | 'project';
 
@@ -69,13 +69,30 @@ const VALIDATION_PATTERNS: Record<string, RegExp> = {
   repo: /^[a-zA-Z0-9._-]{1,100}$/,
   // Issue/PR/discussion/project numbers: digits only.
   num: /^[0-9]{1,10}$/,
-  // Release tags: fairly permissive (v1.0.0, release-2024-01, etc.)
-  // but still excludes characters that have special meaning in a URL.
-  tag: /^[a-zA-Z0-9._-]{1,100}$/,
   // Marketplace app slugs: lowercase alphanumeric and hyphens.
   appname: /^[a-z0-9-]{1,100}$/,
   // Commit SHAs: hex only, 7-40 chars (short or full).
   commitid: /^[a-f0-9]{7,40}$/i,
+};
+
+// Git tags are far more permissive than the other fields above — real
+// tags legitimately use characters like +, ', {, ! (e.g. "v1.0.0+build.5").
+// Rather than an allowlist of "safe" characters, this follows Git's own
+// ref-name rules (git-check-ref-format) and blocks only what Git itself
+// forbids: control characters, spaces, "~^:?*[\", and a few structural
+// cases. Anything Git would accept as a real tag is accepted here too;
+// the URL-encoding and format-escaping done later still keep it safe
+// wherever it's actually inserted.
+const isValidGitTag = (value: string): boolean => {
+  if (!value || value.length > 200) return false;
+  if (/[\x00-\x1F\x7F ~^:?*[\\]/.test(value)) return false;
+  if (value.includes('..')) return false;
+  if (value.includes('@{')) return false;
+  if (value.startsWith('.') || value.endsWith('.')) return false;
+  if (value.endsWith('/') || value.endsWith('.lock')) return false;
+  if (value === '@') return false;
+  if (value.startsWith('-')) return false;
+  return true;
 };
 
 const validateField = (field: keyof typeof VALIDATION_PATTERNS, value: string): boolean =>
@@ -158,7 +175,7 @@ function App() {
       setError('Number must contain digits only');
       return;
     }
-    if (tag && !validateField('tag', tag)) {
+    if (tag && !isValidGitTag(tag)) {
       setError('Tag can only contain letters, numbers, periods, hyphens, and underscores');
       return;
     }
@@ -228,7 +245,7 @@ function App() {
    :alt: GitHub Card
    :target: ${githubUrl}`;
     const asciidoc = `image:${escapeAsciidoc(imageUrl)}[GitHub Card,link="${escapeAsciidoc(githubUrl)}"]`;
-    const html = `<a href="${escapeHtml(githubUrl)}" target="_blank"><img src="${escapeHtml(imageUrl)}" alt="GitHub Card" /></a>`;
+    const html = `<a href="${escapeHtml(githubUrl)}" target="_blank" rel="noopener noreferrer"><img src="${escapeHtml(imageUrl)}" alt="GitHub Card" /></a>`;
 
     setCodeData({
       url: imageUrl,
