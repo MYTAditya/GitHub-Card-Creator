@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Copy, CheckCircle, AlertCircle, ExternalLink, Image as ImageIcon, Download } from "lucide-react";
-import { FaGithub } from "react-icons/fa";
+import { Copy, CheckCircle, AlertCircle, ExternalLink, Image as ImageIcon, Download } from 'lucide-react';
+import { FaGithub } from 'react-icons/fa';
 
 type CardType = 'repository' | 'issue' | 'pull-request' | 'discussion' | 'release' | 'app' | 'commit' | 'project';
 
@@ -22,6 +22,81 @@ interface CodeData {
   asciidoc: string;
   html: string;
 }
+
+// Encodes a single path segment so user input can't inject extra
+// path parts, query strings, or fragments into the generated URLs.
+const encodeSegment = (value: string | number | undefined): string =>
+  encodeURIComponent(String(value ?? ''));
+
+// Escapes HTML special characters so user input can't break out of
+// the attribute/tag context in the copyable HTML embed snippet.
+const escapeHtml = (value: string): string =>
+  value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+
+// Escapes characters that have special meaning inside Markdown's
+// [text](url) link syntax, so a value can't close the "(" early
+// or start a new "[" section.
+const escapeMarkdown = (value: string): string =>
+  value
+    .replace(/\\/g, '\\\\')
+    .replace(/\(/g, '%28')
+    .replace(/\)/g, '%29')
+    .replace(/\[/g, '%5B')
+    .replace(/\]/g, '%5D');
+
+// Escapes characters that have special meaning inside AsciiDoc's
+// image:url[text,link="url"] syntax, so a value can't close the
+// [...] block or the "link=" attribute early.
+const escapeAsciidoc = (value: string): string =>
+  value
+    .replace(/\[/g, '%5B')
+    .replace(/\]/g, '%5D')
+    .replace(/"/g, '%22');
+
+// Allowlist patterns matching what GitHub itself permits for each field.
+// Validating input up front (in addition to encoding it later) rejects
+// bad data early and gives the user a clear error instead of silently
+// building a broken or unsafe URL.
+const VALIDATION_PATTERNS: Record<string, RegExp> = {
+  // GitHub usernames/orgs: alphanumeric and single hyphens, 1-39 chars.
+  user: /^[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,37}[a-zA-Z0-9])?$/,
+  // Repo names: alphanumeric, hyphens, underscores, periods.
+  repo: /^[a-zA-Z0-9._-]{1,100}$/,
+  // Issue/PR/discussion/project numbers: digits only.
+  num: /^[0-9]{1,10}$/,
+  // Marketplace app slugs: lowercase alphanumeric and hyphens.
+  appname: /^[a-z0-9-]{1,100}$/,
+  // Commit SHAs: hex only, 7-40 chars (short or full).
+  commitid: /^[a-f0-9]{7,40}$/i,
+};
+
+// Git tags are far more permissive than the other fields above — real
+// tags legitimately use characters like +, ', {, ! (e.g. "v1.0.0+build.5").
+// Rather than an allowlist of "safe" characters, this follows Git's own
+// ref-name rules (git-check-ref-format) and blocks only what Git itself
+// forbids: control characters, spaces, "~^:?*[\", and a few structural
+// cases. Anything Git would accept as a real tag is accepted here too;
+// the URL-encoding and format-escaping done later still keep it safe
+// wherever it's actually inserted.
+const isValidGitTag = (value: string): boolean => {
+  if (!value || value.length > 200) return false;
+  if (/[\x00-\x1F\x7F ~^:?*[\\]/.test(value)) return false;
+  if (value.includes('..')) return false;
+  if (value.includes('@{')) return false;
+  if (value.startsWith('.') || value.endsWith('.')) return false;
+  if (value.endsWith('/') || value.endsWith('.lock')) return false;
+  if (value === '@') return false;
+  if (value.startsWith('-')) return false;
+  return true;
+};
+
+const validateField = (field: keyof typeof VALIDATION_PATTERNS, value: string): boolean =>
+  VALIDATION_PATTERNS[field].test(value);
 
 function App() {
   const [formData, setFormData] = useState<FormData>({
@@ -86,6 +161,33 @@ function App() {
       return;
     }
 
+    // Allowlist validation: reject anything that doesn't look like a
+    // real GitHub username, repo, number, tag, app slug, or commit SHA.
+    if (user && !validateField('user', user)) {
+      setError('Username can only contain letters, numbers, and single hyphens');
+      return;
+    }
+    if (repo && !validateField('repo', repo)) {
+      setError('Repository name can only contain letters, numbers, periods, hyphens, and underscores');
+      return;
+    }
+    if (num !== undefined && String(num) !== '' && !validateField('num', String(num))) {
+      setError('Number must contain digits only');
+      return;
+    }
+    if (tag && !isValidGitTag(tag)) {
+      setError('Tag can only contain letters, numbers, periods, hyphens, and underscores');
+      return;
+    }
+    if (appname && !validateField('appname', appname)) {
+      setError('App name can only contain lowercase letters, numbers, and hyphens');
+      return;
+    }
+    if (commitid && !validateField('commitid', commitid)) {
+      setError('Commit ID must be a valid hex SHA (7-40 characters)');
+      return;
+    }
+
     setError('');
 
     let imageUrl = '';
@@ -96,36 +198,36 @@ function App() {
 
     switch (type) {
       case 'repository':
-        imageUrl = `${imageUrlConst}/${user}/${repo}`;
-        githubUrl = `${githubUrlConst}/${user}/${repo}`;
+        imageUrl = `${imageUrlConst}/${encodeSegment(user)}/${encodeSegment(repo)}`;
+        githubUrl = `${githubUrlConst}/${encodeSegment(user)}/${encodeSegment(repo)}`;
         break;
       case 'issue':
-        imageUrl = `${imageUrlConst}/${user}/${repo}/issues/${num}`;
-        githubUrl = `${githubUrlConst}/${user}/${repo}/issues/${num}`;
+        imageUrl = `${imageUrlConst}/${encodeSegment(user)}/${encodeSegment(repo)}/issues/${encodeSegment(num)}`;
+        githubUrl = `${githubUrlConst}/${encodeSegment(user)}/${encodeSegment(repo)}/issues/${encodeSegment(num)}`;
         break;
       case 'pull-request':
-        imageUrl = `${imageUrlConst}/${user}/${repo}/pull/${num}`;
-        githubUrl = `${githubUrlConst}/${user}/${repo}/pull/${num}`;
+        imageUrl = `${imageUrlConst}/${encodeSegment(user)}/${encodeSegment(repo)}/pull/${encodeSegment(num)}`;
+        githubUrl = `${githubUrlConst}/${encodeSegment(user)}/${encodeSegment(repo)}/pull/${encodeSegment(num)}`;
         break;
       case 'discussion':
-        imageUrl = `${imageUrlConst}/${user}/${repo}/discussions/${num}`;
-        githubUrl = `${githubUrlConst}/${user}/${repo}/discussions/${num}`;
+        imageUrl = `${imageUrlConst}/${encodeSegment(user)}/${encodeSegment(repo)}/discussions/${encodeSegment(num)}`;
+        githubUrl = `${githubUrlConst}/${encodeSegment(user)}/${encodeSegment(repo)}/discussions/${encodeSegment(num)}`;
         break;
       case 'release':
-        imageUrl = `${imageUrlConst}/${user}/${repo}/releases/tag/${tag}`;
-        githubUrl = `${githubUrlConst}/${user}/${repo}/releases/tag/${tag}`;
+        imageUrl = `${imageUrlConst}/${encodeSegment(user)}/${encodeSegment(repo)}/releases/tag/${encodeSegment(tag)}`;
+        githubUrl = `${githubUrlConst}/${encodeSegment(user)}/${encodeSegment(repo)}/releases/tag/${encodeSegment(tag)}`;
         break;
       case 'app':
-        imageUrl = `${imageUrlConst}/marketplace/${appname}`;
-        githubUrl = `${githubUrlConst}/marketplace/${appname}`;
+        imageUrl = `${imageUrlConst}/marketplace/${encodeSegment(appname)}`;
+        githubUrl = `${githubUrlConst}/marketplace/${encodeSegment(appname)}`;
         break;
       case 'commit':
-        imageUrl = `${imageUrlConst}/${user}/${repo}/commit/${commitid}`;
-        githubUrl = `${githubUrlConst}/${user}/${repo}/commit/${commitid}`;
+        imageUrl = `${imageUrlConst}/${encodeSegment(user)}/${encodeSegment(repo)}/commit/${encodeSegment(commitid)}`;
+        githubUrl = `${githubUrlConst}/${encodeSegment(user)}/${encodeSegment(repo)}/commit/${encodeSegment(commitid)}`;
         break;
       case 'project':
-        imageUrl = `${imageUrlConst}/${acctype}/${user}/projects/${num}`;
-        githubUrl = `${githubUrlConst}/${acctype}/${user}/projects/${num}`;
+        imageUrl = `${imageUrlConst}/${encodeSegment(acctype)}/${encodeSegment(user)}/projects/${encodeSegment(num)}`;
+        githubUrl = `${githubUrlConst}/${encodeSegment(acctype)}/${encodeSegment(user)}/projects/${encodeSegment(num)}`;
         break;
     }
 
@@ -133,13 +235,17 @@ function App() {
     setGithubUrl(githubUrl);
     setImageLoaded(false);
 
-    // Generate code data
-    const markdown = `[![GitHub Card](${imageUrl})](${githubUrl})`;
+    // Generate code data. imageUrl/githubUrl are already URL-encoded
+    // (see encodeSegment above), so they're safe to drop into a URL
+    // context as-is. The extra escaping below is defense-in-depth
+    // specifically for the syntax characters each output format uses
+    // to delimit links (Markdown's "()[]", AsciiDoc's "[]" and '"').
+    const markdown = `[![GitHub Card](${escapeMarkdown(imageUrl)})](${escapeMarkdown(githubUrl)})`;
     const rst = `.. image:: ${imageUrl}
    :alt: GitHub Card
    :target: ${githubUrl}`;
-    const asciidoc = `image:${imageUrl}[GitHub Card,link="${githubUrl}"]`;
-    const html = `<a href="${githubUrl}" target="_blank"><img src="${imageUrl}" alt="GitHub Card" /></a>`;
+    const asciidoc = `image:${escapeAsciidoc(imageUrl)}[GitHub Card,link="${escapeAsciidoc(githubUrl)}"]`;
+    const html = `<a href="${escapeHtml(githubUrl)}" target="_blank" rel="noopener noreferrer"><img src="${escapeHtml(imageUrl)}" alt="GitHub Card" /></a>`;
 
     setCodeData({
       url: imageUrl,
