@@ -61,18 +61,11 @@ const VALIDATION_PATTERNS: Record<string, RegExp> = {
   num: /^[0-9]{1,10}$/,
   // Marketplace app slugs: lowercase alphanumeric and hyphens.
   appname: /^[a-z0-9-]{1,100}$/,
-  // Commit SHAs: hex only.
-  commitid: /^[a-f0-9]{7,40}$/i,
+  // Commit SHAs: Either SHA-1 or SHA-256 hex only.
+  commitid: /^[a-f0-9]{40}$|^[a-f0-9]{64}$/i,
 };
 
-// Git tags are far more permissive than the other fields above — real
-// tags legitimately use characters like +, ', {, ! (e.g. "v1.0.0+build.5").
-// Rather than an allowlist of "safe" characters, this follows Git's own
-// ref-name rules (git-check-ref-format) and blocks only what Git itself
-// forbids: control characters, spaces, "~^:?*[\", and a few structural
-// cases. Anything Git would accept as a real tag is accepted here too;
-// the URL-encoding and format-escaping done later still keep it safe
-// wherever it's actually inserted.
+// GitHub tags will follow Git's ref-name rules (git-check-ref-format).
 const isValidGitTag = (value: string): boolean => {
   if (!value || value.length > 200) return false;
   if (/[\x00-\x1F\x7F ~^:?*[\\]/.test(value)) return false;
