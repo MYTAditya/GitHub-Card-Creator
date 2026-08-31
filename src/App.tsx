@@ -28,8 +28,7 @@ interface CodeData {
 const encodeSegment = (value: string | number | undefined): string =>
   encodeURIComponent(String(value ?? ''));
 
-// Escapes HTML special characters so user input can't break out of
-// the attribute/tag context in the copyable HTML embed snippet.
+// Escapes special characters
 const escapeHtml = (value: string): string =>
   value
     .replace(/&/g, '&amp;')
@@ -38,9 +37,6 @@ const escapeHtml = (value: string): string =>
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
 
-// Escapes characters that have special meaning inside Markdown's
-// [text](url) link syntax, so a value can't close the "(" early
-// or start a new "[" section.
 const escapeMarkdown = (value: string): string =>
   value
     .replace(/\\/g, '\\\\')
@@ -49,9 +45,6 @@ const escapeMarkdown = (value: string): string =>
     .replace(/\[/g, '%5B')
     .replace(/\]/g, '%5D');
 
-// Escapes characters that have special meaning inside AsciiDoc's
-// image:url[text,link="url"] syntax, so a value can't close the
-// [...] block or the "link=" attribute early.
 const escapeAsciidoc = (value: string): string =>
   value
     .replace(/\[/g, '%5B')
@@ -59,9 +52,6 @@ const escapeAsciidoc = (value: string): string =>
     .replace(/"/g, '%22');
 
 // Allowlist patterns matching what GitHub itself permits for each field.
-// Validating input up front (in addition to encoding it later) rejects
-// bad data early and gives the user a clear error instead of silently
-// building a broken or unsafe URL.
 const VALIDATION_PATTERNS: Record<string, RegExp> = {
   // GitHub usernames/orgs: alphanumeric and single hyphens, 1-39 chars.
   user: /^[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,37}[a-zA-Z0-9])?$/,
@@ -71,7 +61,7 @@ const VALIDATION_PATTERNS: Record<string, RegExp> = {
   num: /^[0-9]{1,10}$/,
   // Marketplace app slugs: lowercase alphanumeric and hyphens.
   appname: /^[a-z0-9-]{1,100}$/,
-  // Commit SHAs: hex only, 7-40 chars (short or full).
+  // Commit SHAs: hex only.
   commitid: /^[a-f0-9]{7,40}$/i,
 };
 
@@ -235,17 +225,13 @@ function App() {
     setGithubUrl(githubUrl);
     setImageLoaded(false);
 
-    // Generate code data. imageUrl/githubUrl are already URL-encoded
-    // (see encodeSegment above), so they're safe to drop into a URL
-    // context as-is. The extra escaping below is defense-in-depth
-    // specifically for the syntax characters each output format uses
-    // to delimit links (Markdown's "()[]", AsciiDoc's "[]" and '"').
+    // Generate code data
     const markdown = `[![GitHub Card](${escapeMarkdown(imageUrl)})](${escapeMarkdown(githubUrl)})`;
     const rst = `.. image:: ${imageUrl}
    :alt: GitHub Card
    :target: ${githubUrl}`;
     const asciidoc = `image:${escapeAsciidoc(imageUrl)}[GitHub Card,link="${escapeAsciidoc(githubUrl)}"]`;
-    const html = `<a href="${escapeHtml(githubUrl)}" target="_blank" rel="noopener noreferrer"><img src="${escapeHtml(imageUrl)}" alt="GitHub Card" /></a>`;
+    const html = `<a href="${escapeHtml(githubUrl)}" target="_blank"><img src="${escapeHtml(imageUrl)}" alt="GitHub Card" /></a>`;
 
     setCodeData({
       url: imageUrl,
@@ -301,8 +287,6 @@ function App() {
       window.URL.revokeObjectURL(blobUrl);
     } catch (err) {
       console.error('Failed to download image: ', err);
-      // Fallback: open the image in a new tab so the user can save it manually
-      openInNewTab(previewUrl);
     }
   };
 
