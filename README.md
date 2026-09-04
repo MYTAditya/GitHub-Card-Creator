@@ -1,4 +1,7 @@
-# GitHub Card Creator
+<div align="center">
+<img src="./src/icon.svg" alt="Official Icon" width="100" />
+<h1 style="font-size: 28px; margin: 10px 0;">GitHub Card Creator</h1>
+</div>
 
 ![](https://img.shields.io/github/created-at/MYTAditya/GitHub-Card-Creator?color=561BC5&style=for-the-badge&logo=GitHub)
 ![](https://img.shields.io/github/v/release/MYTAditya/GitHub-Card-Creator?color=a9e43a&style=for-the-badge&logo=GitHub)
@@ -7,7 +10,7 @@
 ![](https://img.shields.io/github/stars/MYTAditya/GitHub-Card-Creator?style=for-the-badge&logo=GitHub&color=01c45b)
 ![](https://visitor-badge.laobi.icu/badge?page_id=MYTAditya.GitHub-Card-Creator&left_text=VISITORS&logo=github&radius=0)
 
-GitHub Card Creator is a free online tool for generating GitHub's official-style social preview cards — the same cards you see when a GitHub link (Repository, Issue, Pull Request, Discussion, or Release) is shared on social media. Use it to preview, embed, or download those cards for your own site or posts.
+GitHub Card Creator is a free online tool for generating GitHub's official-style social preview cards — the same cards you see when a GitHub link (Repository, Issue, Pull Request, Discussion, Release etc.) is shared on social media. Use it to preview, embed, or download those cards for your own site or posts.
 
 **🔗 Try it live:** [github-card-creator.vercel.app](https://github-card-creator.vercel.app)
 
@@ -85,10 +88,8 @@ Contributions are welcome! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for s
 If you discover a security vulnerability, please **do not** open a public issue. See [SECURITY.md](./SECURITY.md) for how to report it responsibly.
 
 ## License
-
-This project is licensed under the [BSD-2-Clause License](./LICENSE).
-The GitHub Card Creator logo is licensed under the [CC-BY-SA-4.0 License](./LICENSE.CC-BY-SA-4.0).
-Copyright ©️ 2025-Present, Mastered YT Aditya.
+- This project is licensed under the [BSD-2-Clause License](./LICENSE). Copyright ©️ 2025-Present, Mastered YT Aditya.
+- The GitHub Card Creator logo is licensed under the [CC-BY-SA-4.0 License](./LICENSE.CC-BY-SA-4.0). Copyright ©️ 2026-Present, Mastered YT Aditya.
 
 ## Credits
 
