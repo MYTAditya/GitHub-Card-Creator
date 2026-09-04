@@ -100,15 +100,15 @@ Made with ❤️ by [Mastered YT Aditya](https://github.com/MYTAditya).
 | [React](https://react.dev) & [React DOM](https://react.dev) | Meta Platforms, Inc. and affiliates | MIT License |
 | [lucide-react](https://lucide.dev) | 2026 Lucide Icons and Contributors | ISC License |
 | [Feather](https://feathericons.com) (Included in Lucide) | 2013-2023 Cole Bemis | MIT License |
-| [react-icons](https://react-icons.github.io/react-icons) | 2018 kamijin_fanta <kamijin@live.jp> | Custom License |
+| [react-icons](https://react-icons.github.io/react-icons) | 2018 kamijin_fanta &lt;kamijin@live.jp&gt; | Custom License |
 | [Vite](https://vitejs.dev) | 2019-present, VoidZero Inc. and Vite contributors | MIT License |
 | [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react) | 2019-present, Yuxi (Evan) You and Vite contributors | MIT License |
 | [TypeScript](https://www.typescriptlang.org) | Microsoft Corporation | Apache License 2.0 |
 | [typescript-eslint](https://typescript-eslint.io) | 2019 typescript-eslint and other contributors | MIT License |
-| [ESLint](https://eslint.org) & [@eslint/js](https://eslint.org) | OpenJS Foundation and other contributors, <www.openjsf.org> | MIT License |
+| [ESLint](https://eslint.org) & [@eslint/js](https://eslint.org) | OpenJS Foundation and other contributors, &lt;www.openjsf.org&gt; | MIT License |
 | [eslint-plugin-react-hooks](https://www.npmjs.com/package/eslint-plugin-react-hooks) | Meta Platforms, Inc. and affiliates. | MIT License |
 | [eslint-plugin-react-refresh](https://github.com/ArnaudBarre/eslint-plugin-react-refresh) | Arnaud Barré (https://github.com/ArnaudBarre) | MIT License |
 | [Tailwind CSS](https://tailwindcss.com) (via `@tailwindcss/postcss`) | Tailwind Labs, Inc. | MIT License |
-| [Autoprefixer](https://github.com/postcss/autoprefixer) | 2013 Andrey Sitnik <andrey@sitnik.es> | MIT License |
-| [globals](https://www.npmjs.com/package/globals) | Sindre Sorhus <sindresorhus@gmail.com> (https://sindresorhus.com) | MIT License |
+| [Autoprefixer](https://github.com/postcss/autoprefixer) | 2013 Andrey Sitnik &lt;andrey@sitnik.es&gt; | MIT License |
+| [globals](https://www.npmjs.com/package/globals) | Sindre Sorhus &lt;sindresorhus@gmail.com&gt; (https://sindresorhus.com) | MIT License |
 | [@types/react](https://www.npmjs.com/package/@types/react) & [@types/react-dom](https://www.npmjs.com/package/@types/react-dom) (DefinitelyTyped) | Microsoft Corporation | MIT License |
