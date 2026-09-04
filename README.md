@@ -87,13 +87,15 @@ If you discover a security vulnerability, please **do not** open a public issue.
 ## License
 
 This project is licensed under the [BSD-2-Clause License](./LICENSE).
+The GitHub Card Creator logo is licensed under the [CC-BY-SA-4.0 License](./LICENSE.CC-BY-SA-4.0).
+Copyright ©️ 2025-Present, Mastered YT Aditya.
 
 ## Credits
 
 Made with ❤️ by [Mastered YT Aditya](https://github.com/MYTAditya).
 
 | Package Name | Copyright | License |
-| --- | --- |
+| --- | --- | --- |
 | [React](https://react.dev) & [React DOM](https://react.dev) | Meta Platforms, Inc. and affiliates | MIT License |
 | [lucide-react](https://lucide.dev) | 2026 Lucide Icons and Contributors | ISC License |
 | [Feather](https://feathericons.com) (Included in Lucide) | 2013-2023 Cole Bemis | MIT License |
