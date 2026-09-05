@@ -14,7 +14,7 @@ GitHub Card Creator is a free online tool for generating GitHub's official-style
 
 **🔗 Try it live:** [github-card-creator.vercel.app](https://github-card-creator.vercel.app)
 
-> **Note:** "GitHub" and the Octocat design are trademarks of GitHub, Inc. This project is an independent, unofficial tool made by Mastered YT Aditya and is not affiliated with, endorsed by, or sponsored by GitHub.
+> **Note:** This tool generates preview cards by linking to publicly available GitHub content and GitHub's own OpenGraph image service. It does not host, moderate, or control the content of the linked repositories, issues, commits, etc. The maintainer is not responsible for the content of any GitHub resource generated or linked to through this tool. "GitHub" and the Octocat design are trademarks of GitHub, Inc. This project is an independent, unofficial tool made by Mastered YT Aditya and is not affiliated with, endorsed by, or sponsored by GitHub.
 
 ## Table of Contents
 
