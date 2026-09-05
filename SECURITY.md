@@ -52,5 +52,6 @@ GitHub Card Creator is a client-side web app that generates GitHub-style preview
 Since this is a fan-made project and not an official GitHub product, vulnerabilities in GitHub's own platform or APIs should be reported directly to GitHub via their [Security Bug Bounty program](https://bounty.github.com/), not here.
 
 ## Disclaimer
+This app generates links and preview cards for publicly available GitHub resources (repositories, issues, commits, etc.) based on user input. It does not control, host, or vet the content at those destinations, nor the third-party image service (opengraph.githubassets.com) used to render previews. The maintainer is not liable for any content found at generated or linked URLs, or for any consequences of visiting them.
 
 This project is provided under the BSD-2-Clause License, "as is," without warranty of any kind. See [LICENSE](./LICENSE) for details.
