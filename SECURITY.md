@@ -4,11 +4,11 @@
 
 GitHub Card Creator is a small, actively-maintained client-side tool. There is no long-term support policy for older versions — security attention is focused on the latest code on the `master` branch and the most recent published release, which is also what powers the live deployment at [github-card-creator.vercel.app](https://github-card-creator.vercel.app).
 
-| Version              | Supported          |
-| -------------------- | ------------------- |
-| Latest release       | :white_check_mark:  |
-| `master` branch      | :white_check_mark:  |
-| Older releases       | :x:                  |
+| Version | Supported |
+| --- | --- |
+| Latest release | :white_check_mark: |
+| `master` branch | :white_check_mark: |
+| Older releases | :x: |
 
 If you're running an older fork or self-hosted copy, please update to the latest `master` before reporting an issue, since it may already be fixed.
 
