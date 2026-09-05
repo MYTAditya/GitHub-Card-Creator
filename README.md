@@ -29,7 +29,7 @@ GitHub Card Creator is a free online tool for generating GitHub's official-style
 
 ## Features
 
-- 🗂️ Generate cards for **Repositories, Issues, Pull Requests, Discussions, and Releases**
+- 🗂️ Generate cards for **Repositories, Issues, Pull Requests, Discussions, Releases etc.**
 - 🎨 Cards match GitHub's own social-preview card styling
 - 🖼️ Download generated cards as images
 - 🔗 Get embeddable card links/HTML for use on your own website or blog
