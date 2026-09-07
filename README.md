@@ -88,8 +88,7 @@ Contributions are welcome! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for s
 If you discover a security vulnerability, please **do not** open a public issue. See [SECURITY.md](./SECURITY.md) for how to report it responsibly.
 
 ## License
-- This project is licensed under the [BSD-2-Clause License](./LICENSE). Copyright ©️ 2025-Present, Mastered YT Aditya.
-- The GitHub Card Creator logo is licensed under the [CC-BY-SA-4.0 License](./LICENSE.CC-BY-SA-4.0). Copyright ©️ 2026-Present, Mastered YT Aditya.
+This project is licensed under the [BSD-2-Clause License](./LICENSE). Copyright ©️ 2025-Present, Mastered YT Aditya.
 
 ## Credits
 
