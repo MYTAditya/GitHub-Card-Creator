@@ -2,7 +2,8 @@
 
 Thanks for your interest in contributing! GitHub Card Creator is a small, community-driven tool for generating GitHub-style social preview cards, and contributions of all sizes — bug fixes, features, docs, and design tweaks — are welcome.
 
-> **Note:** This project is a fan-made tool and is **not affiliated with GitHub or GitHub, Inc.** Please keep that in mind when discussing branding, naming, or visual design changes.
+> [!NOTE]
+> This project is a fan-made tool and is **not affiliated with GitHub or GitHub, Inc.** Please keep that in mind when discussing branding, naming, or visual design changes.
 
 ## Table of Contents
 
