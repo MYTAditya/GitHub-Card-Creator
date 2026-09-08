@@ -19,8 +19,8 @@ GitHub Card Creator is a free online tool for generating GitHub's official-style
 
 > [!NOTE]
 > "GitHub" and the Octocat design are trademarks of GitHub, Inc. This project is an independent, unofficial tool made by Mastered YT Aditya and is not affiliated with, endorsed by, or sponsored by GitHub.
-
-## Table of Contents
+<details>
+  <summary><b>Table of Contents</b></summary>
 
 - [Features](#features)
 - [Tech Stack](#tech-stack)
@@ -30,6 +30,8 @@ GitHub Card Creator is a free online tool for generating GitHub's official-style
 - [Security](#security)
 - [License](#license)
 - [Credits](#credits)
+
+</details>
 
 ## Features
 
