@@ -5,7 +5,8 @@ Thanks for your interest in contributing! GitHub Card Creator is a small, commun
 > [!NOTE]
 > This project is a fan-made tool and is **not affiliated with GitHub or GitHub, Inc.** Please keep that in mind when discussing branding, naming, or visual design changes.
 
-## Table of Contents
+<details>
+   <summary><b>Table of Contents</b></summary>
 
 - [Code of Conduct](#code-of-conduct)
 - [Getting Started](#getting-started)
@@ -18,6 +19,8 @@ Thanks for your interest in contributing! GitHub Card Creator is a small, commun
 - [Suggesting Features](#suggesting-features)
 - [Security Issues](#security-issues)
 - [License](#license)
+
+</details>
 
 ## Code of Conduct
 
