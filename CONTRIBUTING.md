@@ -30,7 +30,7 @@ Be respectful and constructive. Assume good intent, keep discussions focused on 
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) (LTS version recommended)
+- [Node.js](https://nodejs.org) (LTS version recommended)
 - npm (bundled with Node.js)
 - Git
 
@@ -39,7 +39,7 @@ Be respectful and constructive. Assume good intent, keep discussions focused on 
 1. **Fork** the repository on GitHub.
 2. **Clone** your fork locally:
    ```bash
-   git clone https://github.com/<your-username>/GitHub-Card-Creator.git
+   git clone https://github.com/MYTAditya/GitHub-Card-Creator.git
    cd GitHub-Card-Creator
    ```
 3. **Install dependencies**:
