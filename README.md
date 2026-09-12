@@ -43,17 +43,17 @@ GitHub Card Creator is a free online tool for generating GitHub's official-style
 
 ## Tech Stack
 
-- **[Vite](https://vitejs.dev/)** — build tool and dev server
-- **[TypeScript](https://www.typescriptlang.org/)** — primary language
-- **[Tailwind CSS](https://tailwindcss.com/)** — styling
-- **[ESLint](https://eslint.org/)** — linting
-- Deployed on **[Vercel](https://vercel.com/)**
+- **[Vite](https://vitejs.dev)** — build tool and dev server
+- **[TypeScript](https://www.typescriptlang.org)** — primary language
+- **[Tailwind CSS](https://tailwindcss.com)** — styling
+- **[ESLint](https://eslint.org)** — linting
+- Deployed on **[Vercel](https://vercel.com/**
 
 ## Getting Started
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) (LTS recommended)
+- [Node.js](https://nodejs.org) (LTS recommended)
 - npm
 
 ### Installation
