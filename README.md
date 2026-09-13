@@ -1,6 +1,6 @@
 <div align="center">
-<img src="./src/icon.svg" alt="Official Icon" width="100" />
-<h1 style="font-size: 28px; margin: 10px 0;">GitHub Card Creator</h1>
+  <img src="./src/icon.svg" alt="Official Icon" width="100" />
+  <h1 style="font-size: 28px; margin: 10px 0;">GitHub Card Creator</h1>
 </div>
 
 ![](https://img.shields.io/github/created-at/MYTAditya/GitHub-Card-Creator?color=561BC5&style=for-the-badge&logo=GitHub)
@@ -22,14 +22,14 @@ GitHub Card Creator is a free online tool for generating GitHub's official-style
 <details>
   <summary><b>Table of Contents</b></summary>
 
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Getting Started](#getting-started)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [Security](#security)
-- [License](#license)
-- [Credits](#credits)
+  - [Features](#features)
+  - [Tech Stack](#tech-stack)
+  - [Getting Started](#getting-started)
+  - [Usage](#usage)
+  - [Contributing](#contributing)
+  - [Security](#security)
+  - [License](#license)
+  - [Credits](#credits)
 
 </details>
 
@@ -47,7 +47,7 @@ GitHub Card Creator is a free online tool for generating GitHub's official-style
 - **[TypeScript](https://www.typescriptlang.org)** — primary language
 - **[Tailwind CSS](https://tailwindcss.com)** — styling
 - **[ESLint](https://eslint.org)** — linting
-- Deployed on **[Vercel](https://vercel.com/**
+- Deployed on **[Vercel](https://vercel.com)**
 
 ## Getting Started
 
