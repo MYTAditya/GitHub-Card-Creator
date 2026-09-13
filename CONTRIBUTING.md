@@ -8,17 +8,17 @@ Thanks for your interest in contributing! GitHub Card Creator is a small, commun
 <details>
    <summary><b>Table of Contents</b></summary>
 
-- [Code of Conduct](#code-of-conduct)
-- [Getting Started](#getting-started)
-- [Project Structure](#project-structure)
-- [Development Workflow](#development-workflow)
-- [Coding Guidelines](#coding-guidelines)
-- [Commit Messages](#commit-messages)
-- [Submitting a Pull Request](#submitting-a-pull-request)
-- [Reporting Bugs](#reporting-bugs)
-- [Suggesting Features](#suggesting-features)
-- [Security Issues](#security-issues)
-- [License](#license)
+  - [Code of Conduct](#code-of-conduct)
+  - [Getting Started](#getting-started)
+  - [Project Structure](#project-structure)
+  - [Development Workflow](#development-workflow)
+  - [Coding Guidelines](#coding-guidelines)
+  - [Commit Messages](#commit-messages)
+  - [Submitting a Pull Request](#submitting-a-pull-request)
+  - [Reporting Bugs](#reporting-bugs)
+  - [Suggesting Features](#suggesting-features)
+  - [Security Issues](#security-issues)
+  - [License](#license)
 
 </details>
 
