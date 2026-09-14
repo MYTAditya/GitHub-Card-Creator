@@ -1,0 +1,4 @@
+*.json linguist-detectable=true
+*.svg linguist-detectable=true
+package.json linguist-detectable=false
+package-lock.json linguist-detectable=false
