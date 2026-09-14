@@ -67,6 +67,7 @@ const VALIDATION_PATTERNS: Record<string, RegExp> = {
 // GitHub tags: Git's ref-name rules (git-check-ref-format).
 const isValidGitTag = (value: string): boolean => {
   if (!value || value.length > 200) return false;
+  // eslint-disable-next-line no-control-regex
   if (/[\x00-\x1F\x7F ~^:?*[\\]/.test(value)) return false;
   if (value.includes('..')) return false;
   if (value.includes('@{')) return false;
