@@ -20,7 +20,7 @@ Instead, please report it privately using one of the following methods:
 
 1. **Preferred:** Use GitHub's private vulnerability reporting feature for this repository:
    [github.com/MYTAditya/GitHub-Card-Creator/security/advisories/new](https://github.com/MYTAditya/GitHub-Card-Creator/security/advisories/new)
-2. **Discord:** Message the maintainer directly on Discord: [discord.com/users/808184827177336832](https://discord.com/users/808184827177336832)
+2. **Email:** Message the maintainer directly via email: mytaditya@proton.me
 3. If neither of the above works, open a regular issue asking to be contacted privately (without including vulnerability details), and the maintainer will follow up.
 
 > [!NOTE]
